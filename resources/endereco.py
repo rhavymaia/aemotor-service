@@ -3,11 +3,11 @@ from sqlalchemy import exc
 
 from helpers.database import db
 
+from model.error import Error, error_campos
+
 from model.endereco import Endereco
 from model.pessoa import Pessoa
 from model.aluno import Aluno
-
-from model.error import Error, error_campos
 
 
 parser = reqparse.RequestParser()

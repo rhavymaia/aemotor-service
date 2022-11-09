@@ -6,12 +6,13 @@ class Pessoa(db.Model):
 
     __tablename__ = "tb_pessoa"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column('id', db.Integer, primary_key=True)
     nome = db.Column(db.String, unique=True, nullable=False)
     nascimento = db.Column(db.Date)
     email = db.Column(db.String, unique=True)
-    telefone = db.Column(db.String(11))
+    telefone = db.Column(db.String(11))    
 
+    # Relacionamento com Endereço
     endereco = db.relationship("Endereco", uselist=False)
 
     # Herança: Superclasse

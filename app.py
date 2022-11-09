@@ -2,9 +2,12 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 
+from helpers.database import db, migrate
 from resources.endereco import Endereco
 
-from helpers.database import db, migrate
+from model.endereco import Endereco
+from model.pessoa import Pessoa
+from model.aluno import Aluno
 
 # CORS
 app = Flask(__name__)
@@ -19,7 +22,7 @@ migrate.init_app(app, db)
 
 api = Api(app)
 
-api.add_resource(Endereco, '/enderecos')
+#api.add_resource(Endereco, '/enderecos')
 
 if __name__ == '__main__':
     app.run(debug=False)
