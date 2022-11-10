@@ -1,34 +1,33 @@
-from model.funcionario import Funcionario_db 
+from model.motorista import Motorista_db
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
 from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
+
 parser = reqparse.RequestParser()
-parser.add_argument('prefeitura', required=True)
-parser.add_argument('cargo', required=True)
+parser.add_argument('rotas', required=True)
 
 
-class Funcionario(Resource):
+class Motorista(Resource):
     def get(self):
-        current_app.logger.info("Get - Funcionarios")
-        funcionario = Funcionario_db.query\
-            .order_by(Funcionario_db.cargo)\
+        current_app.logger.info("Get - Motorista")
+        motorista = Motorista_db.query\
+            .order_by(Motorista_db.rotas)\
             .all()
-        return funcionario, 200
+        return motorista, 200
     def post(self):
-        current_app.logger.info("Post - Funcionarios")
+        current_app.logger.info("Post - Motoristas")
         try:
             # JSON
             args = parser.parse_args()
-            prefeitura = args['prefeitura']
-            cargo = args['cargo']
-
-            # Funcionario
-            funcionario = Funcionario_db(prefeitura,cargo)
-            # Criação do Funcionario.
-            db.session.add(funcionario)
+            rotas = args['rotas']
+           
+            # Motorista
+            motorista = Motorista_db(rotas)
+            # Criação do Motorista.
+            db.session.add(motorista)
             db.session.commit()
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
@@ -38,8 +37,8 @@ class Funcionario(Resource):
 
         return 204
     
-    def put(self, funcionario_id):
-        current_app.logger.info("Put - Funcionarios")
+    def put(self, motorista_id):
+        current_app.logger.info("Put - Motoristas")
         try:
             # Parser JSON
             args = parser.parse_args()
@@ -49,8 +48,8 @@ class Funcionario(Resource):
             cargo = args['cargo']
     
 
-            Funcionario_db.query \
-                .filter_by(id=funcionario_id) \
+            Motorista_db.query \
+                .filter_by(id=motorista_id) \
                 .update(dict(prefeitura=prefeitura,cargo = cargo ))
             db.session.commit()
 
@@ -59,10 +58,10 @@ class Funcionario(Resource):
 
         return 204
     
-    def delete(self, funcionario_id):
-        current_app.logger.info("Delete - Funcionarios: %s:" % funcionario_id)
+    def delete(self, motorista_id):
+        current_app.logger.info("Delete - Motoristas: %s:" % motorista_id)
         try:
-            Funcionario_db.query.filter_by(id=funcionario_id).delete()
+            Motorista_db.query.filter_by(id=motorista_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:
