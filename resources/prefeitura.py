@@ -6,7 +6,10 @@ from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 from model.prefeitura import Prefeitura_db
 
 parser = reqparse.RequestParser()
+parser.add_argument('nomePrefeito', required=True)
 parser.add_argument('email', required=True)
+parser.add_argument('secretarios', required=True)
+parser.add_argument('telefone', required=True)
 
 class Prefeitura(Resource):
     def get(self):
@@ -21,10 +24,12 @@ class Prefeitura(Resource):
         try:
             # JSON
             args = parser.parse_args()
+            nomePrefeito = args['nomePrefeito']
             email = args['email']
-
+            secretarios = args['secretarios']
+            telefone = args['telefone']
             # Prefeitura
-            prefeitura = Prefeitura_db(email)
+            prefeitura = Prefeitura_db(nomePrefeito,email,secretarios,telefone)
             # Criação do Prefeitura.
             db.session.add(prefeitura)
             db.session.commit()
@@ -42,12 +47,14 @@ class Prefeitura(Resource):
             # Parser JSON
             args = parser.parse_args()
             current_app.logger.info("Prefeitura: %s:" % args)
-            # Evento
+            # Event
+            nomePrefeito = args['nomePrefeito']
             email = args['email']
-
+            secretarios = args['secretarios']
+            telefone = args['telefone']
             Prefeitura_db.query \
                 .filter_by(id=prefeitura_id) \
-                .update(dict(email=email))
+                .update(dict(nomePrefeito=nomePrefeito,email=email,secretarios=secretarios,telefone=telefone))
             db.session.commit()
 
         except exc.SQLAlchemyError:

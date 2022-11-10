@@ -6,12 +6,12 @@ from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 parser = reqparse.RequestParser()
-parser.add_argument('id_gestor', required=True)
+parser.add_argument('gestorApp', required=True)
 class GestorApp(Resource):
     def get(self):
         current_app.logger.info("Get - GestorApp")
         gestor = GestorApp_db.query\
-            .order_by(GestorApp_db.id_gestor)\
+            .order_by(GestorApp_db.gestorApp)\
             .all()
         return gestor, 200
     def post(self):
@@ -19,12 +19,12 @@ class GestorApp(Resource):
         try:
             # JSON
             args = parser.parse_args()
-            id_gestor = args['id_gestor']
+            gestorApp = args['gestorApp']
 
             # GestorApp
-            gestorApp = GestorApp_db(id_gestor)
+            gestorAPP = GestorApp_db(gestorApp)
             # Criação do GestorApp.
-            db.session.add(gestorApp)
+            db.session.add(gestorAPP)
             db.session.commit()
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
@@ -41,13 +41,13 @@ class GestorApp(Resource):
             args = parser.parse_args()
             current_app.logger.info("GestorApp: %s:" % args)
             # Evento
-            id_gestor = args['id_gestor']
+            gestorApp = args['gestorApp']
             
     
 
             GestorApp_db.query \
                 .filter_by(id=gestorApp_id) \
-                .update(dict(id_gestor=id_gestor))
+                .update(dict(gestorApp=gestorApp))
             db.session.commit()
 
         except exc.SQLAlchemyError:

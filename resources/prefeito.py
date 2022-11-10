@@ -6,7 +6,7 @@ from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 parser = reqparse.RequestParser()
-parser.add_argument('nome', required=True)
+parser.add_argument('nomePrefeito', required=True)
 
 class Prefeito(Resource):
     def get(self):

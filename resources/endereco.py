@@ -9,6 +9,9 @@ from model.error import Error, error_campos
 
 
 parser = reqparse.RequestParser()
+parser.add_argument('cep', required=True)
+parser.add_argument('complemento', required=True)
+parser.add_argument('referencia', required=True)
 parser.add_argument('logradouro', required=True)
 
 
@@ -24,10 +27,13 @@ class Endereco(Resource):
         try:
             # JSON
             args = parser.parse_args()
+            cep = args['cep']
+            complemento = args['complemento']
+            referencia = args['referencia']
             logradouro = args['logradouro']
 
             # Enderecodb
-            endereco = Endereco_db(logradouro)
+            endereco = Endereco_db(cep,complemento,referencia,logradouro)
             # Criação do Enderecodb.
             db.session.add(endereco)
             db.session.commit()
@@ -46,11 +52,13 @@ class Endereco(Resource):
             args = parser.parse_args()
             current_app.logger.info("Endereço: %s:" % args)
             # Evento
+            cep = args['cep']
+            complemento = args['complemento']
+            referencia = args['referencia']
             logradouro = args['logradouro']
-
             Endereco_db.query \
                 .filter_by(id=endereco_id) \
-                .update(dict(logradouro=logradouro))
+                .update(dict(cep=cep,complemento=complemento,referencia=referencia,logradouro=logradouro))
             db.session.commit()
 
         except exc.SQLAlchemyError:

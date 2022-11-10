@@ -42,15 +42,13 @@ class Motorista(Resource):
         try:
             # Parser JSON
             args = parser.parse_args()
-            current_app.logger.info("Funcionario: %s:" % args)
+            current_app.logger.info("Motoristas: %s:" % args)
             # Evento
-            prefeitura = args['prefeitura']
-            cargo = args['cargo']
-    
+            rotas = args['rotas']
 
             Motorista_db.query \
                 .filter_by(id=motorista_id) \
-                .update(dict(prefeitura=prefeitura,cargo = cargo ))
+                .update(dict(rotas=rotas))
             db.session.commit()
 
         except exc.SQLAlchemyError:
