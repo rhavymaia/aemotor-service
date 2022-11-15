@@ -2,34 +2,39 @@ from flask_restful import Resource, reqparse, current_app, marshal, marshal_with
 from sqlalchemy import exc
 
 from helpers.database import db
-
 from model.error import Error, error_campos
 
 from model.endereco import Endereco
-from model.pessoa import Pessoa
-from model.aluno import Aluno
-
+from .serializer import response_serializer
 
 parser = reqparse.RequestParser()
-parser.add_argument('logradouro', required=True)
+parser.add_argument('cep', required=True, location= 'json')
+parser.add_argument('numero', required=True, location= 'json')
+parser.add_argument('complemento', required=True, location= 'json')
+parser.add_argument('referencia', required=True, location= 'json')
+parser.add_argument('logradouro', required=True, location= 'json')
 
-
-class Endereco(Resource):
+class Endereco_Resource(Resource):
     def get(self):
-        current_app.logger.info("Get - Endereços")
-        endereco = Endereco.query\
-            .all()
-        return endereco, 200
+        current_app.logger.info("Get - Enderecos")
+        enderecos = Endereco.query.all()
+        response = response_serializer(enderecos)
+        return response, 200
 
     def post(self):
         current_app.logger.info("Post - Endereços")
         try:
             # JSON
             args = parser.parse_args()
+            cep = args['cep']
+            numero = args['numero']
+            complemento = args['complemento']
+            referencia = args['referencia']
             logradouro = args['logradouro']
 
             # Endereco
-            endereco = Endereco(logradouro)
+            endereco = Endereco(cep, numero, complemento, referencia, logradouro)
+            
             # Criação do Endereco.
             db.session.add(endereco)
             db.session.commit()
@@ -41,18 +46,23 @@ class Endereco(Resource):
 
         return 204
 
-    def put(self, endereco_id):
+    def put(self, id):
         current_app.logger.info("Put - Endereço")
         try:
             # Parser JSON
             args = parser.parse_args()
             current_app.logger.info("Endereço: %s:" % args)
+            
             # Evento
+            cep = args['cep']
+            numero = args['numero']
+            complemento = args['complemento']
+            referencia = args['referencia']
             logradouro = args['logradouro']
 
             Endereco.query \
-                .filter_by(id=endereco_id) \
-                .update(dict(logradouro=logradouro))
+                .filter_by(id = id) \
+                .update(dict(cep = cep, numero = numero, complemento = complemento, referencia = referencia, logradouro=logradouro))
             db.session.commit()
 
         except exc.SQLAlchemyError:
@@ -60,10 +70,10 @@ class Endereco(Resource):
 
         return 204
 
-    def delete(self, endereco_id):
-        current_app.logger.info("Delete - Endereço: %s:" % endereco_id)
+    def delete(self, id):
+        current_app.logger.info("Delete - Endereço: %s:" % id)
         try:
-            Endereco.query.filter_by(id=endereco_id).delete()
+            Endereco.query.filter_by(id=id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:
