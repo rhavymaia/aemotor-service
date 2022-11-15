@@ -10,6 +10,7 @@ class Pessoa(db.Model):
     nome = db.Column(db.String, unique=True, nullable=False)
     nascimento = db.Column(db.Date)
     email = db.Column(db.String, unique=True)
+    senha = db.Column(db.String, unique=True, nullable=False)
     telefone = db.Column(db.String(11))    
 
     # Relacionamento com Endereço

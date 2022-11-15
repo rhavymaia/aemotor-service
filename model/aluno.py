@@ -12,7 +12,7 @@ class Aluno(Pessoa, db.Model):
     curso = db.Column(db.String, nullable=False)
     matricula = db.Column(db.String, unique=True, nullable=False)
 
-    def __init__(self, nome, nascimento, email, telefone, instituicaoDeEnsino, curso, matricula, endereco):
+    def __init__(self, nome, nascimento, email, telefone, instituicaoDeEnsino, curso, matricula):
         super().__init__(nome, nascimento, email, telefone)
         self.instituicaoDeEnsino = instituicaoDeEnsino
         self.curso = curso
