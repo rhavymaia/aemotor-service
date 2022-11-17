@@ -18,11 +18,12 @@ class Pessoa(db.Model):
     tipo_pessoa = db.Column('tipo_pessoa', String(50))
     __mapper_args__ = {'polymorphic_on': tipo_pessoa}
 
-    def __init__(self, nome, nascimento, email, telefone):
+    def __init__(self, nome, nascimento, email, telefone, endereco):
         self.nome = nome
         self.nascimento = nascimento
         self.email = email
         self.telefone = telefone
+        self.endereco = endereco
 
     def __repr__(self):
         return '<Nome: {}\n Data de Nascimento: {}\n Email: {}\n Telefone: {}>'.format(self.nome, self.nascimento, self.email, self.telefone)

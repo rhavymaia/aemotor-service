@@ -4,8 +4,6 @@ from sqlalchemy import exc
 from helpers.database import db
 
 from model.endereco import Endereco
-from model.pessoa import Pessoa
-from model.aluno import Aluno
 
 from model.error import Error, error_campos
 
@@ -14,7 +12,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('logradouro', required=True)
 
 
-class Endereco(Resource):
+class Enderecos(Resource):
     def get(self):
         current_app.logger.info("Get - Endereços")
         endereco = Endereco.query\

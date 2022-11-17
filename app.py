@@ -2,7 +2,8 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 
-from resources.endereco import Endereco
+from resources.endereco import Enderecos
+from resources.funcionario import Funcionarios
 
 from helpers.database import db, migrate
 
@@ -19,7 +20,8 @@ migrate.init_app(app, db)
 
 api = Api(app)
 
-api.add_resource(Endereco, '/enderecos')
+api.add_resource(Enderecos, '/enderecos')
+api.add_resource(Funcionarios, '/funcionarios')
 
 if __name__ == '__main__':
     app.run(debug=False)
