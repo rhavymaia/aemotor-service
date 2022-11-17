@@ -1,5 +1,6 @@
 from model.pessoa import Pessoa
 from helpers.database import db
+from sqlalchemy import ForeignKey
 from flask_restful import fields
 
 from model.endereco import endereco_fields
@@ -19,17 +20,11 @@ funcionario_fields = {
 class Funcionario(Pessoa, db.Model):
 
     __tablename__ = "tb_funcionario"
-    __mapper_args__ = {'polymorphic_identity': 'funcionario', 'concrete': True}
+    __mapper_args__ = {'polymorphic_identity': 'funcionario'}
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(ForeignKey("tb_pessoa.id"), primary_key=True)
     prefeitura = db.Column(db.String, nullable=False)
     cargo = db.Column(db.String, nullable=False)
-
-    nome = db.Column(db.String, unique=True, nullable=False)
-    nascimento = db.Column(db.Date)
-    email = db.Column(db.String, unique=True)
-    telefone = db.Column(db.String(11))
-    endereco = db.relationship("Endereco", uselist=False)
 
     def __init__(self, nome, nascimento, email, telefone, endereco, prefeitura, cargo):
         super().__init__(nome, nascimento, email, telefone, endereco)
