@@ -3,6 +3,7 @@ from flask_restful import Api
 from flask_cors import CORS
 
 from helpers.database import db, migrate
+from model.login import Login
 from resources.endereco import Endereco
 
 from model.endereco import Endereco
@@ -23,6 +24,7 @@ migrate.init_app(app, db)
 api = Api(app)
 
 #api.add_resource(Endereco, '/enderecos')
+api.add_resource(Login, '/login')
 
 if __name__ == '__main__':
     app.run(debug=False)
