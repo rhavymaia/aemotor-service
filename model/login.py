@@ -3,12 +3,10 @@ from helpers.database import db
 from model.pessoa import Pessoa
 from flask_restful import fields
 
-
-
 login_fields = {
-    'id': fields.Integer(attribute='id'),
-    'email': fields.String(attribute='email'),
-    'senha': fields.String(attribute='senha')
+'id': fields.Integer(attribute='id'),
+'email': fields.String(attribute='email'),
+'senha': fields.String(attribute='senha')
 }
 
 class Login(Pessoa, db.Model):
