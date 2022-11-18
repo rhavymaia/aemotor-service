@@ -21,8 +21,6 @@ class Pessoa_db(db.Model):
     gestor_child = db.relationship("GestorApp_db", uselist=False)
 
     # Herança: Superclasse
-    tipo_pessoa = db.Column('tipo_pessoa', String(50))
-    __mapper_args__ = {'polymorphic_on': tipo_pessoa}
 
     def __init__(self, nome, nascimento, email, telefone):
         self.nome = nome

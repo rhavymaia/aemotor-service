@@ -1,6 +1,7 @@
 
 from flask_restful import Resource, reqparse, current_app, marshal, marshal_with
 from sqlalchemy import exc
+from flask import request,jsonify
 
 from helpers.database import db
 
@@ -9,10 +10,10 @@ from model.error import Error, error_campos
 
 
 parser = reqparse.RequestParser()
-parser.add_argument('cep', required=True)
-parser.add_argument('complemento', required=True)
-parser.add_argument('referencia', required=True)
-parser.add_argument('logradouro', required=True)
+parser.add_argument('cep', required=True,location='args')
+parser.add_argument('complemento', required=True,location='args')
+parser.add_argument('referencia', required=True,location='args')
+parser.add_argument('logradouro', required=True,location='args')
 
 
 class Endereco(Resource):
@@ -26,11 +27,16 @@ class Endereco(Resource):
         current_app.logger.info("Post - Endereços")
         try:
             # JSON
-            args = parser.parse_args()
-            cep = args['cep']
-            complemento = args['complemento']
-            referencia = args['referencia']
-            logradouro = args['logradouro']
+            # args = parser.parse_args()
+            # cep = args['cep']
+            # complemento = args['complemento']
+            # referencia = args['referencia']
+            # logradouro = args['logradouro']
+            cep = request.form.get('cep')
+            complemento = request.form.get('complemento')
+            referencia = request.form.get('referencia')
+            logradouro = request.form.get('logradouro')
+           
 
             # Enderecodb
             endereco = Endereco_db(cep,complemento,referencia,logradouro)

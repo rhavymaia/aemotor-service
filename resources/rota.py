@@ -1,4 +1,4 @@
-from model.rota import Rota_db
+from model.rota import Rota_db,Rota_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -16,6 +16,7 @@ parser.add_argument('horaChegada', required=True)
 
 
 class Rota(Resource):
+    @marshal_with(Rota_fields)
     def get(self):
         current_app.logger.info("Get - Rota")
         rota = Rota_db.query\
@@ -30,13 +31,14 @@ class Rota(Resource):
             args = parser.parse_args()
             nomeDestino = args['nomeDestino']
             qtdalunos = args['qtdalunos']
+            prefeitura = args['prefeitura']
             veiculo = args['veiculo']
             passageiro = args['passageiro']
             horaSaida = args['horaSaida']
             horaChegada = args['horaChegada']
             
             # Rota
-            rota = Rota_db(nomeDestino,qtdalunos,passageiro,veiculo,horaSaida,horaChegada)
+            rota = Rota_db(nomeDestino,qtdalunos,prefeitura,passageiro,veiculo,horaSaida,horaChegada)
             # Criação do Rota.
             db.session.add(rota)
             db.session.commit()

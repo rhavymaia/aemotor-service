@@ -1,18 +1,30 @@
 from helpers.database import db
+from flask_restful import fields
+
+Rota_fields = {
+    'id': fields.Integer(attribute='id'),
+    'nomeDestino': fields.String(attribute='nomeDestino'),
+    'qtdalunos': fields.String(attribute='qtdalunos'),
+    'prefeitura': fields.String(attribute='prefeitura'),
+    'veiculo': fields.String(attribute='veiculo'),
+    'passageiro': fields.String(attribute='passageiro'),
+    'horaSaida': fields.String(attribute='horaSaida'),
+    'horaChegada': fields.String(attribute='horaChegada')
+}
 
 class Rota_db(db.Model):
+    
     
     __tablename__ = 'tb_Rota'
 
     id = db.Column(db.Integer, primary_key=True)
-    nomeDestino = db.Column(db.String(30), nullable=False)
-    qtdalunos = db.Column(db.String(11), nullable=False)
-    prefeitura = db.Column(db.String(80), nullable=False)
-    veiculo = db.Column(db.String(30), nullable=False)
-    passageiro = db.Column(db.String(11), nullable=False)
-    horaSaida = db.Column(db.String(80), nullable=False)
-    horaChegada = db.Column(db.String(80), nullable=False)
-    aluno_id = db.Column(db.Integer, db.ForeignKey('tb_aluno.id_aluno'), nullable=False)
+    nomeDestino = db.Column(db.String(30), nullable=True)
+    qtdalunos = db.Column(db.String(11), nullable=True)
+    prefeitura = db.Column(db.String(80), nullable=True)
+    veiculo = db.Column(db.String(30), nullable=True)
+    passageiro = db.Column(db.String(11), nullable=True)
+    horaSaida = db.Column(db.String(80), nullable=True)
+    horaChegada = db.Column(db.String(80), nullable=True)
   
     prefeitura_child = db.relationship("Prefeitura_db", uselist=False)
     instituicoes = db.relationship('InstituicaoDeEnsino_db', backref='InstituicaoDeEnsino_db', lazy=True)

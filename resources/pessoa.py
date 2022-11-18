@@ -6,6 +6,7 @@ from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 parser = reqparse.RequestParser()
+
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
@@ -26,10 +27,12 @@ class Pessoa(Resource):
         try:
             # JSON
             args = parser.parse_args()
+        
             nome = args['nome']
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
+           
             # Pessoa
             pessoa = Pessoa_db(nome,nascimento,email,telefone)
             # Criação do Pessoa.
@@ -54,10 +57,11 @@ class Pessoa(Resource):
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
+            tipo_pessoa = args['tipo_pessoa']
 
             Pessoa_db.query \
                 .filter_by(id=pessoa_id) \
-                .update(dict(nome=nome,nascimento = nascimento, email = email, telefone = telefone))
+                .update(dict(nome=nome,nascimento = nascimento, email = email, telefone = telefone,tipo_pessoa=tipo_pessoa))
             db.session.commit()
 
         except exc.SQLAlchemyError:

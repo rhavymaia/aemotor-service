@@ -1,16 +1,26 @@
-from model.funcionario import Funcionario_db 
+from model.funcionario import Funcionario_db,funcionario_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
 from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
+from helpers.database import db
+from model.endereco import Endereco_db
+from model.error import Error, error_campos
+
 parser = reqparse.RequestParser()
+parser.add_argument('nome', required=True)
+parser.add_argument('nascimento', required=True)
+parser.add_argument('email', required=True)
+parser.add_argument('telefone', required=True)
+parser.add_argument('endereco', type=dict, required=True)
 parser.add_argument('prefeitura', required=True)
 parser.add_argument('cargo', required=True)
 
 
 class Funcionario(Resource):
+    @marshal_with(funcionario_fields)
     def get(self):
         current_app.logger.info("Get - Funcionarios")
         funcionario = Funcionario_db.query\
@@ -22,11 +32,25 @@ class Funcionario(Resource):
         try:
             # JSON
             args = parser.parse_args()
+            nome = args['nome']
+            nascimento = args['nascimento']
+            email = args['email']
+            telefone = args['telefone']
+            #Endereco_db
+            cep = args['endereco']['cep']
+            numero = args['endereco']['numero']
+            complemento = args['endereco']['complemento']
+            referencia = args['endereco']['referencia']
+            logradouro = args['endereco']['logradouro']
+            endereco = Endereco_db(cep, numero, complemento,
+                                referencia, logradouro)
+
             prefeitura = args['prefeitura']
             cargo = args['cargo']
 
             # Funcionario
-            funcionario = Funcionario_db(prefeitura,cargo)
+            funcionario = Funcionario_db(
+                nome, nascimento, email, telefone, endereco, prefeitura, cargo)
             # Criação do Funcionario.
             db.session.add(funcionario)
             db.session.commit()
