@@ -16,7 +16,7 @@ parser.add_argument('referencia', required=True)
 parser.add_argument('logradouro', required=True)
 from .serializer import response_serializer_end
 
-class EnderecoResource(Resource):
+
     def get(self):
         current_app.logger.info("Get - Endereços")
         endereco = Endereco.query.all()

@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
-from flask_mail import Mail
+
 from helpers.database import db, migrate
 
 
@@ -29,8 +29,7 @@ convite = Convites("email@gmail.com", "Venha se cadastrar no nosso aplicativo")
 print(convite)
 api.add_resource(ConvitesResource, '/convite')
 
-#api.add_resource(EnderecoResource, '/endereco')
-api.add_resource(EnderecoResource, '/endereco/<int:id>')
+
 
 if __name__ == '__main__':
     app.run(debug=False)
