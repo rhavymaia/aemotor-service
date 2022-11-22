@@ -1,13 +1,10 @@
-from model.funcionario import Funcionario_db,funcionario_fields
+from model.aluno import Aluno_db,Aluno_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
 from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
-
-from helpers.database import db
 from model.endereco import Endereco_db
-from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
@@ -15,20 +12,21 @@ parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
 parser.add_argument('telefone', required=True)
 parser.add_argument('endereco', type=dict, required=True)
-parser.add_argument('prefeitura', required=True)
-parser.add_argument('cargo', required=True)
+parser.add_argument('instituicaoDeEnsino', required=True)
+parser.add_argument('curso', required=True)
+parser.add_argument('matricula', required=True)
 
-
-class Funcionario(Resource):
-    @marshal_with(funcionario_fields)
+class Aluno(Resource):
+    @marshal_with(Aluno_fields)
     def get(self):
-        current_app.logger.info("Get - Funcionarios")
-        funcionario = Funcionario_db.query\
-            .order_by(Funcionario_db.cargo)\
+        current_app.logger.info("Get - Alunodb")
+        aluno = Aluno_db.query\
+            .order_by(Aluno_db.curso)\
             .all()
-        return funcionario, 200
+        return aluno, 200
+    
     def post(self):
-        current_app.logger.info("Post - Funcionarios")
+        current_app.logger.info("Post - Alunos")
         try:
             # JSON
             args = parser.parse_args()
@@ -36,7 +34,10 @@ class Funcionario(Resource):
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
-            #Endereco_db
+            instituicaoDeEnsino = args['instituicaoDeEnsino']
+            curso = args['curso']
+            matricula = args['matricula']
+             #Endereco_db
             cep = args['endereco']['cep']
             numero = args['endereco']['numero']
             complemento = args['endereco']['complemento']
@@ -44,15 +45,10 @@ class Funcionario(Resource):
             logradouro = args['endereco']['logradouro']
             endereco = Endereco_db(cep, numero, complemento,
                                 referencia, logradouro)
-
-            prefeitura = args['prefeitura']
-            cargo = args['cargo']
-
-            # Funcionario
-            funcionario = Funcionario_db(
-                nome, nascimento, email, telefone, endereco, prefeitura, cargo)
-            # Criação do Funcionario.
-            db.session.add(funcionario)
+            # Alunodb
+            aluno = Aluno_db( nome, nascimento, email, telefone, endereco,instituicaoDeEnsino,curso,matricula)
+            # Criação do Alunodb.
+            db.session.add(aluno)
             db.session.commit()
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
@@ -62,20 +58,20 @@ class Funcionario(Resource):
 
         return 204
     
-    def put(self, funcionario_id):
-        current_app.logger.info("Put - Funcionarios")
+    def put(self, aluno_id):
+        current_app.logger.info("Put - Alunos")
         try:
             # Parser JSON
             args = parser.parse_args()
-            current_app.logger.info("Funcionario: %s:" % args)
+            current_app.logger.info("Alunodb: %s:" % args)
             # Evento
-            prefeitura = args['prefeitura']
-            cargo = args['cargo']
-    
+            instituicaoDeEnsino = args['instituicaoDeEnsino']
+            curso = args['curso']
+            matricula = args['matricula']
 
-            Funcionario_db.query \
-                .filter_by(id=funcionario_id) \
-                .update(dict(prefeitura=prefeitura,cargo = cargo ))
+            Aluno_db.query \
+                .filter_by(id=aluno_id) \
+                .update(dict(instituicaoDeEnsino=instituicaoDeEnsino,curso = curso, matricula = matricula))
             db.session.commit()
 
         except exc.SQLAlchemyError:
@@ -83,10 +79,10 @@ class Funcionario(Resource):
 
         return 204
     
-    def delete(self, funcionario_id):
-        current_app.logger.info("Delete - Funcionarios: %s:" % funcionario_id)
+    def delete(self, aluno_id):
+        current_app.logger.info("Delete - Alunodb: %s:" % aluno_id)
         try:
-            Funcionario_db.query.filter_by(id=funcionario_id).delete()
+            Aluno_db.query.filter_by(id=aluno_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

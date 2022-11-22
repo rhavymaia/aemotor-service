@@ -1,4 +1,4 @@
-from model.pessoa import Pessoa_db
+from model.instituicaoDeEnsino import InstituicaoDeEnsino_db
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -6,37 +6,30 @@ from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 parser = reqparse.RequestParser()
-
 parser.add_argument('nome', required=True)
-parser.add_argument('nascimento', required=True)
-parser.add_argument('email', required=True)
 parser.add_argument('telefone', required=True)
+parser.add_argument('logradouro', required=True)
 
-
-
-
-class Pessoa(Resource):
+class InstituicaoDeEnsino(Resource):
     def get(self):
-        current_app.logger.info("Get - Pessoas ")
-        pessoa = Pessoa_db.query\
-            .order_by(Pessoa_db.email)\
+        current_app.logger.info("Get - InstituicaoDeEnsino")
+        instituicao = InstituicaoDeEnsino_db.query\
+            .order_by(InstituicaoDeEnsino_db.nome)\
             .all()
-        return pessoa, 200
+        return instituicao, 200
     def post(self):
-        current_app.logger.info("Post - Pessoas")
+        current_app.logger.info("Post - InstituicaoDeEnsino")
         try:
             # JSON
             args = parser.parse_args()
-        
             nome = args['nome']
-            nascimento = args['nascimento']
-            email = args['email']
             telefone = args['telefone']
-           
-            # Pessoa
-            pessoa = Pessoa_db(nome,nascimento,email,telefone)
-            # Criação do Pessoa.
-            db.session.add(pessoa)
+            logradouro = args['logradouro']
+
+            # Endereco
+            instituicaoDeEnsino = InstituicaoDeEnsino_db(nome,telefone,logradouro)
+            # Criação do Endereco.
+            db.session.add(instituicaoDeEnsino)
             db.session.commit()
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
@@ -46,22 +39,20 @@ class Pessoa(Resource):
 
         return 204
     
-    def put(self, pessoa_id):
-        current_app.logger.info("Put - Pessoas")
+    def put(self, instituicao_id):
+        current_app.logger.info("Put - InstituicaoDeEnsino")
         try:
             # Parser JSON
             args = parser.parse_args()
-            current_app.logger.info("Pessoa: %s:" % args)
+            current_app.logger.info("InstituicaoDeEnsino: %s:" % args)
             # Evento
             nome = args['nome']
-            nascimento = args['nascimento']
-            email = args['email']
             telefone = args['telefone']
-            tipo_pessoa = args['tipo_pessoa']
+            logradouro = args['logradouro']
 
-            Pessoa_db.query \
-                .filter_by(id=pessoa_id) \
-                .update(dict(nome=nome,nascimento = nascimento, email = email, telefone = telefone,tipo_pessoa=tipo_pessoa))
+            InstituicaoDeEnsino_db.query \
+                .filter_by(id=instituicao_id) \
+                .update(dict(nome=nome,telefone = telefone,logradouro=logradouro ))
             db.session.commit()
 
         except exc.SQLAlchemyError:
@@ -69,10 +60,10 @@ class Pessoa(Resource):
 
         return 204
     
-    def delete(self, pessoa_id):
-        current_app.logger.info("Delete - Pessoas: %s:" % pessoa_id)
+    def delete(self, instituicao_id):
+        current_app.logger.info("Delete - InstituicaoDeEnsino: %s:" % instituicao_id)
         try:
-            Pessoa_db.query.filter_by(id=pessoa_id).delete()
+            InstituicaoDeEnsino_db.query.filter_by(id=instituicao_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:
