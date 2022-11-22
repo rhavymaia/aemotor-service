@@ -12,11 +12,12 @@ class Aluno(Pessoa, db.Model):
     curso = db.Column(db.String, nullable=False)
     matricula = db.Column(db.String, unique=True, nullable=False)
 
-    def __init__(self, nome, nascimento, email, telefone, instituicaoDeEnsino, curso, matricula, endereco):
-        super().__init__(nome, nascimento, email, telefone)
+    def __init__(self, nome, nascimento, email, senha, telefone, instituicaoDeEnsino, curso, matricula, endereco):
+        super().__init__(nome, nascimento, email, senha, telefone, endereco)
         self.instituicaoDeEnsino = instituicaoDeEnsino
         self.curso = curso
         self.matricula = matricula
+        self.endereco = endereco  # não mapeado ainda!
 
     def __repr__(self):
         return '<Nome: {}\n Nascimento: {}\n Email: {}\n Telefone: {}\n Instituição de ensino: {}\n Curso: {}\n Matrícula: {}>'.format(self.nome, self.nascimento, self.email, self.telefone, self.instituicaoDeEnsino, self.curso, self.matricula)
