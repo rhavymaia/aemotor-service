@@ -5,8 +5,11 @@ from model.login import Login
 
 from resources.endereco import Enderecos
 from resources.funcionario import Funcionarios
-
 from helpers.database import db, migrate
+
+from model.endereco import Endereco
+from model.pessoa import Pessoa
+from model.aluno import Aluno
 
 # CORS
 app = Flask(__name__)

@@ -26,8 +26,8 @@ class Funcionario(Pessoa, db.Model):
     prefeitura = db.Column(db.String, nullable=False)
     cargo = db.Column(db.String, nullable=False)
 
-    def __init__(self, nome, nascimento, email, senha, telefone, endereco, prefeitura, cargo):
-        super().__init__(nome, nascimento, email, senha, telefone, endereco)
+    def __init__(self, nome, nascimento, email, telefone, endereco, prefeitura, cargo):
+        super().__init__(nome, nascimento, email, telefone, endereco)
         self.prefeitura = prefeitura
         self.cargo = cargo
 

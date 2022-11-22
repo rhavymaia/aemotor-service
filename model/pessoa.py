@@ -6,13 +6,14 @@ class Pessoa(db.Model):
 
     __tablename__ = "tb_pessoa"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column('id', db.Integer, primary_key=True)
     nome = db.Column(db.String, unique=True, nullable=False)
-    nascimento = db.Column(db.String(10), unique=True, nullable=False)
     email = db.Column(db.String(200), unique=True)
     senha = db.Column(db.String(300), unique=True, nullable=False)
     telefone = db.Column(db.String(11))
+    nascimento = db.Column(db.Date) 
 
+    # Relacionamento com Endereço
     endereco = db.relationship("Endereco", uselist=False)
     login = db.relationship("Login", uselist=False)
 
