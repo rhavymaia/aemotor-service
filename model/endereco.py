@@ -1,4 +1,14 @@
 from helpers.database import db
+from flask_restful import fields
+
+endereco_fields = {
+    'id': fields.Integer(attribute='id'),
+    'cep': fields.String(attribute='cep'),
+    'numero': fields.String(attribute='numero'),
+    'complemento': fields.String(attribute='complemento'),
+    'referencia': fields.String(attribute='referencia'),
+    'logradouro': fields.String(attribute='logradouro')
+}
 
 
 class Endereco(db.Model):
