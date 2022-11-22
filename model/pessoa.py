@@ -13,8 +13,9 @@ class Pessoa(db.Model):
     senha = db.Column(db.String(300), unique=True, nullable=False)
     telefone = db.Column(db.String(11))
 
+    # Relacionamento com Endereco
     endereco = db.relationship("Endereco", uselist=False)
-
+    aluno_child = db.relationship("Aluno", uselist=False)
     # Herança: Superclasse
     tipo_pessoa = db.Column('tipo_pessoa', String(50))
     __mapper_args__ = {'polymorphic_on': tipo_pessoa}

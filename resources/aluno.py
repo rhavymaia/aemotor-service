@@ -3,7 +3,7 @@ from sqlalchemy import exc
 
 from helpers.database import db
 
-from model.aluno import Aluno
+from model.aluno import Aluno, aluno_fields
 from model.endereco import Endereco
 from model.error import Error, error_campos
 
@@ -12,22 +12,24 @@ parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
+parser.add_argument('senha', required=True)
 parser.add_argument('telefone', required=True)
 parser.add_argument('instituicaoDeEnsino', required=True)
 parser.add_argument('curso', required=True)
 parser.add_argument('matricula', required=True)
 parser.add_argument('endereco',type=dict, required=True)
-parser.add_argument('senha', required=True)
+
 
 class Alunos(Resource):
+    @marshal_with(aluno_fields)
     def get(self):
-        current_app.logger.info("Get - Endereços")
-        endereco = Aluno.query\
+        current_app.logger.info("Get - Alunos")
+        aluno = Aluno.query\
             .all()
-        return endereco, 200
+        return aluno, 200
 
     def post(self):
-        current_app.logger.info("Post - Endereços")
+        current_app.logger.info("Post - Alunos")
         try:
             # JSON
             args = parser.parse_args()

@@ -24,8 +24,11 @@ migrate.init_app(app, db)
 api = Api(app)
 
 api.add_resource(Enderecos, '/enderecos')
+
 api.add_resource(Funcionarios, '/funcionarios')
+
 api.add_resource(Alunos, '/alunos')
+#api.add_resource(Alunos, '/alunos/<int:id>')
 
 if __name__ == '__main__':
     app.run(debug=False)
