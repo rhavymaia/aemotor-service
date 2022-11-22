@@ -38,7 +38,7 @@ class Rota(Resource):
             horaChegada = args['horaChegada']
             
             # Rota
-            rota = Rota_db(nomeDestino,qtdalunos,prefeitura,passageiro,veiculo,horaSaida,horaChegada)
+            rota = Rota_db(nomeDestino,qtdalunos,prefeitura,veiculo,passageiro,horaSaida,horaChegada)
             # Criação do Rota.
             db.session.add(rota)
             db.session.commit()
