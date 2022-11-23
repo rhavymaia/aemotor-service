@@ -51,9 +51,9 @@ class Alunos(Resource):
                                 referencia, logradouro)
 
 
-            # Endereco
+            # Aluno
             cadastro = Aluno(nome, nascimento, email,senha, telefone, instituicaoDeEnsino, curso, matricula, endereco)
-            # Criação do Endereco.
+            # Criação do Cadastro de aluno.
             db.session.add(cadastro)
             db.session.commit()
         except exc.SQLAlchemyError as err:
