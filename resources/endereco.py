@@ -1,11 +1,8 @@
 from flask_restful import Resource, reqparse, current_app, marshal, marshal_with
 from sqlalchemy import exc
-
 from helpers.database import db
 from model.error import Error, error_campos
-
-from model.endereco import Endereco
-from .serializer import response_serializer
+from model.endereco import Endereco, endereco_fields
 
 parser = reqparse.RequestParser()
 parser.add_argument('cep', required=True, location= 'json')
@@ -15,11 +12,13 @@ parser.add_argument('referencia', required=True, location= 'json')
 parser.add_argument('logradouro', required=True, location= 'json')
 
 class Endereco_Resource(Resource):
+    
+    @marshal_with(endereco_fields)
     def get(self):
-        current_app.logger.info("Get - Enderecos")
-        enderecos = Endereco.query.all()
-        response = response_serializer(enderecos)
-        return response, 200
+        current_app.logger.info("Get - Endereços")
+        endereco = Endereco.query\
+            .all()
+        return endereco, 200
 
     def post(self):
         current_app.logger.info("Post - Endereços")
@@ -46,6 +45,7 @@ class Endereco_Resource(Resource):
 
         return 204
 
+class Enderecos_Resource(Resource):
     def put(self, id):
         current_app.logger.info("Put - Endereço")
         try:

@@ -1,4 +1,14 @@
 from helpers.database import db
+from flask_restful import fields
+
+endereco_fields = {
+    'id': fields.Integer(attribute='id'),
+    'cep': fields.String(attribute='cep'),
+    'numero': fields.String(attribute='numero'),
+    'complemento': fields.String(attribute='complemento'),
+    'referencia': fields.String(attribute='referencia'),
+    'logradouro': fields.String(attribute='logradouro')
+}
 
 class Endereco(db.Model):
 
@@ -10,6 +20,8 @@ class Endereco(db.Model):
     complemento = db.Column(db.String, nullable=False)
     referencia = db.Column(db.String, nullable=False)
     logradouro = db.Column(db.String, nullable=False)
+
+    prefeitura_id = db.Column(db.Integer, db.ForeignKey("tb_prefeitura.id"))
 
     def __init__(self, cep, numero, complemento, referencia, logradouro):
         self.cep = cep
