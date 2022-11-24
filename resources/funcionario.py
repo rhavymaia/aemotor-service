@@ -40,11 +40,12 @@ class Funcionarios(Resource):
             telefone = args['telefone']
 
             # Endereco
-            cep = args['endereco']['cep']
-            numero = args['endereco']['numero']
-            complemento = args['endereco']['complemento']
-            referencia = args['endereco']['referencia']
-            logradouro = args['endereco']['logradouro']
+            enderecoArgs = args['endereco']
+            cep = enderecoArgs['cep']
+            numero = enderecoArgs['numero']
+            complemento = enderecoArgs['complemento']
+            referencia = enderecoArgs['referencia']
+            logradouro = enderecoArgs['logradouro']
             endereco = Endereco(cep, numero, complemento,
                                 referencia, logradouro)
 
@@ -54,6 +55,7 @@ class Funcionarios(Resource):
             # Funcionário
             funcionario = Funcionario(
                 nome, nascimento, email, telefone, endereco, prefeitura, cargo)
+
             # Criação do Funcionário.
             db.session.add(funcionario)
             db.session.commit()
