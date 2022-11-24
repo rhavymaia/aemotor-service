@@ -27,9 +27,9 @@ class Aluno(Pessoa_db,db.Model):
     curso = db.Column(db.String(50), nullable=False)
     matricula = db.Column(db.String(20), nullable=False) 
     
-    instituicao_child = db.relationship("InstituicaoDeEnsino_db", uselist=False)
+    instituicao = db.relationship("InstituicaoDeEnsino", uselist=False)
     rotas = db.relationship('Rota', backref='Rota', lazy=True)
-    passageiro_child = db.relationship('Passageiro',uselist=False)
+    passageiro = db.relationship('Passageiro',uselist=False)
     
 
     def __init__(self, nome, nascimento, email, telefone,endereco, instituicaoDeEnsino, curso, matricula,pessoa):

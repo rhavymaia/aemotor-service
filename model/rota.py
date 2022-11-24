@@ -26,7 +26,7 @@ class Rota(db.Model):
     horaSaida = db.Column(db.String(80), nullable=True)
     horaChegada = db.Column(db.String(80), nullable=True)
   
-    prefeitura_child = db.relationship("Prefeitura", uselist=False)
+    prefeitura = db.relationship("Prefeitura", uselist=False)
     instituicoes = db.relationship('InstituicaoDeEnsino', backref='InstituicaoDeEnsino', lazy=True)
    
     def __init__(self, nomeDestino, qtdalunos, prefeitura, veiculo, passageiro, horaSaida, horaChegada):

@@ -3,7 +3,7 @@ from helpers.database import db
 class GestorApp(Pessoa_db,db.Model):
     
     __tablename__ = 'tb_gestorApp'
-    __mapper_args__ = {'polymorphic_identity': 'gestor', 'concrete': True}
+    __mapper_args__ = {'polymorphic_identity': 'gestor'}
     
     id_gestor = db.Column(db.Integer, primary_key=True)
     gestorApp = db.Column(db.String(80), nullable=False)

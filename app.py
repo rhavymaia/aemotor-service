@@ -4,21 +4,21 @@ from flask_cors import CORS
 
 #Model
 
-from model.endereco import Endereco_db
-from model.pessoa import Pessoa_db
-from model.aluno import Aluno_db
-from model.funcionario import Funcionario_db
-from model.gestorApp import GestorApp_db
-from model.instituicaoDeEnsino import InstituicaoDeEnsino_db
-from model.motorista import Motorista_db
-from model.passageiro import Passageiro_db
-from model.pessoa import Pessoa_db
-from model.prefeito import Prefeito_db
-from model.prefeitura import Prefeitura_db
-from model.rota import Rota_db
-from model.cidade import Cidade_db
-from model.uf import Uf_db
-from model.veiculo import Veiculo_db
+from model.endereco import Endereco
+from model.pessoa import Pessoa
+from model.aluno import Aluno
+from model.funcionario import Funcionario
+from model.gestorApp import GestorApp
+from model.instituicaoDeEnsino import InstituicaoDeEnsino
+from model.motorista import Motorista
+from model.passageiro import Passageiro
+from model.pessoa import Pessoa
+from model.prefeito import Prefeito
+from model.prefeitura import Prefeitura
+from model.rota import Rota
+from model.cidade import Cidade
+from model.uf import Uf
+from model.veiculo import Veiculo
 
 #Resources
 

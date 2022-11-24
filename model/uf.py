@@ -6,7 +6,7 @@ class Uf(db.Model):
     nome = db.Column(db.String(90), nullable=False)
     sigla = db.Column(db.String(6), nullable=False)
     
-    cidade_parent = db.Column(db.Integer, db.ForeignKey("tb_cidade.id"))
+    cidade = db.Column(db.Integer, db.ForeignKey("tb_cidade.id"))
     
     def __init__(self, nome, sigla):
         self.nome = nome
