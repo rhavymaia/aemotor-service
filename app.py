@@ -4,6 +4,7 @@ from flask_cors import CORS
 
 from resources.endereco import Enderecos
 from resources.funcionario import Funcionarios
+from resources.login import Login
 
 from helpers.database import db, migrate
 
@@ -22,6 +23,7 @@ api = Api(app)
 
 api.add_resource(Enderecos, '/enderecos')
 api.add_resource(Funcionarios, '/funcionarios')
+api.add_resource(Login, '/login')
 
 if __name__ == '__main__':
     app.run(debug=False)
