@@ -14,9 +14,9 @@ class Uf(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=False)
-    sigla = db.Column(db.String(3), nullable=False)
+    sigla = db.Column(db.String(2), nullable=False)
 
-    def __init__(self, nome, sigla, uf):
+    def __init__(self, nome, sigla):
         self.nome = nome
         self.sigla = sigla
 

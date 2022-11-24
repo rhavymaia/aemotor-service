@@ -1,7 +1,7 @@
 from helpers.database import db
 from flask_restful import fields
 
-from uf import uf_fields
+from uf import Uf, uf_fields
 
 cidade_fields = {
     'id': fields.Integer(attribute='id'),
@@ -22,7 +22,7 @@ class Cidade(db.Model):
     uf_id = db.Column(db.Integer, db.ForeignKey("tb_uf.id"))
     uf = db.relationship("Uf", uselist=False)
 
-    def __init__(self, nome, sigla, uf):
+    def __init__(self, nome, sigla, uf: Uf):
         self.nome = nome
         self.sigla = sigla
         self.uf = uf
