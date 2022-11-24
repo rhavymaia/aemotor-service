@@ -1,4 +1,4 @@
-from model.prefeito import Prefeito_db
+from model.prefeito import Prefeito
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -8,11 +8,11 @@ from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 parser = reqparse.RequestParser()
 parser.add_argument('nomePrefeito', required=True)
 
-class Prefeito(Resource):
+class Prefeitos(Resource):
     def get(self):
         current_app.logger.info("Get - Prefeitos")
-        prefeito = Prefeito_db.query\
-            .order_by(Prefeito_db.nomePrefeito)\
+        prefeito = Prefeito.query\
+            .order_by(Prefeito.nomePrefeito)\
             .all()
         return prefeito, 200
     def post(self):
@@ -24,7 +24,7 @@ class Prefeito(Resource):
           
 
             # Prefeito
-            prefeito = Prefeito_db(nomePrefeito)
+            prefeito = Prefeito(nomePrefeito)
             # Criação do Prefeito.
             db.session.add(prefeito)
             db.session.commit()
@@ -47,7 +47,7 @@ class Prefeito(Resource):
             
     
 
-            Prefeito_db.query \
+            Prefeito.query \
                 .filter_by(id=prefeito_id) \
                 .update(dict(nomePrefeito=nomePrefeito ))
             db.session.commit()
@@ -60,7 +60,7 @@ class Prefeito(Resource):
     def delete(self, prefeito_id):
         current_app.logger.info("Delete - Prefeitos: %s:" % prefeito_id)
         try:
-            Prefeito_db.query.filter_by(id=prefeito_id).delete()
+            Prefeito.query.filter_by(id=prefeito_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

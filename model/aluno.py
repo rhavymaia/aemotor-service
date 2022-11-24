@@ -4,7 +4,7 @@ from helpers.database import db
 from sqlalchemy import ForeignKey
 from flask_restful import fields
 
-Aluno_fields = {
+aluno_fields = {
     'id': fields.Integer(attribute='id'),
     'nome': fields.String(attribute='nome'),
     'nascimento': fields.String(attribute='nascimento'),
@@ -16,7 +16,7 @@ Aluno_fields = {
     'endereco': fields.Nested(endereco_fields)
 }
 
-class Aluno_db(Pessoa_db,db.Model):
+class Aluno(Pessoa_db,db.Model):
   
     
     __tablename__ = 'tb_aluno'

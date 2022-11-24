@@ -1,4 +1,4 @@
-from model.cidade import Cidade_db
+from model.cidade import Cidade
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -10,11 +10,11 @@ parser.add_argument('nome', required=True)
 parser.add_argument('sigla', required=True)
 
 
-class Cidade(Resource):
+class Cidades(Resource):
     def get(self):
         current_app.logger.info("Get - Cidades")
-        cidade = Cidade_db.query\
-            .order_by(Cidade_db.sigla)\
+        cidade = Cidade.query\
+            .order_by(Cidade.sigla)\
             .all()
         return cidade, 200
     def post(self):
@@ -26,7 +26,7 @@ class Cidade(Resource):
             sigla = args['sigla']
 
             # Cidade
-            cidade = Cidade_db(nome,sigla)
+            cidade = Cidade(nome,sigla)
             # Criação do Cidade.
             db.session.add(cidade)
             db.session.commit()
@@ -49,7 +49,7 @@ class Cidade(Resource):
             sigla = args['sigla']
     
 
-            Cidade_db.query \
+            Cidade.query \
                 .filter_by(id=cidade_id) \
                 .update(dict(nome=nome,sigla = sigla ))
             db.session.commit()
@@ -62,7 +62,7 @@ class Cidade(Resource):
     def delete(self, cidade_id):
         current_app.logger.info("Delete - Cidades: %s:" % cidade_id)
         try:
-            Cidade_db.query.filter_by(id=cidade_id).delete()
+            Cidade.query.filter_by(id=cidade_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

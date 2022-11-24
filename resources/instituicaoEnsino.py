@@ -1,4 +1,4 @@
-from model.instituicaoDeEnsino import InstituicaoDeEnsino_db
+from model.instituicaoDeEnsino import InstituicaoDeEnsino
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -10,11 +10,11 @@ parser.add_argument('nome', required=True)
 parser.add_argument('telefone', required=True)
 parser.add_argument('logradouro', required=True)
 
-class InstituicaoDeEnsino(Resource):
+class InstituicaoDeEnsinos(Resource):
     def get(self):
         current_app.logger.info("Get - InstituicaoDeEnsino")
-        instituicao = InstituicaoDeEnsino_db.query\
-            .order_by(InstituicaoDeEnsino_db.nome)\
+        instituicao = InstituicaoDeEnsino.query\
+            .order_by(InstituicaoDeEnsino.nome)\
             .all()
         return instituicao, 200
     def post(self):
@@ -27,7 +27,7 @@ class InstituicaoDeEnsino(Resource):
             logradouro = args['logradouro']
 
             # Endereco
-            instituicaoDeEnsino = InstituicaoDeEnsino_db(nome,telefone,logradouro)
+            instituicaoDeEnsino = InstituicaoDeEnsino(nome,telefone,logradouro)
             # Criação do Endereco.
             db.session.add(instituicaoDeEnsino)
             db.session.commit()
@@ -50,7 +50,7 @@ class InstituicaoDeEnsino(Resource):
             telefone = args['telefone']
             logradouro = args['logradouro']
 
-            InstituicaoDeEnsino_db.query \
+            InstituicaoDeEnsino.query \
                 .filter_by(id=instituicao_id) \
                 .update(dict(nome=nome,telefone = telefone,logradouro=logradouro ))
             db.session.commit()
@@ -63,7 +63,7 @@ class InstituicaoDeEnsino(Resource):
     def delete(self, instituicao_id):
         current_app.logger.info("Delete - InstituicaoDeEnsino: %s:" % instituicao_id)
         try:
-            InstituicaoDeEnsino_db.query.filter_by(id=instituicao_id).delete()
+            InstituicaoDeEnsino.query.filter_by(id=instituicao_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

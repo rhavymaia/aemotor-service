@@ -1,7 +1,7 @@
-from model.pessoa import Pessoa_db
+from model.pessoa import Pessoa
 from helpers.database import db
 
-class Prefeito_db(Pessoa_db,db.Model):
+class Prefeito(Pessoa,db.Model):
     
     __tablename__ = 'tb_prefeito'
     __mapper_args__ = {'polymorphic_identity': 'prefeito', 'concrete': True}
