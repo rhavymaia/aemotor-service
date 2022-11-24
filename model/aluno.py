@@ -7,9 +7,6 @@ class Aluno(Pessoa, db.Model):
     __tablename__ = "tb_aluno"
     __mapper_args__ = {'polymorphic_identity': 'aluno', 'concrete': True}
 
-
-
-        
     id = db.Column(db.Integer, primary_key=True)
     instituicaoDeEnsino = db.Column(db.String, nullable=False)
     curso = db.Column(db.String, nullable=False)

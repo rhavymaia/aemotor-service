@@ -8,22 +8,20 @@ class Pessoa(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, unique=True, nullable=False)
     nascimento = db.Column(db.String(10), unique=True, nullable=False)
-    email = db.Column(db.String(200), unique=True)
-    senha = db.Column(db.String(300), unique=True, nullable=False)
+    email = db.Column(db.String(200), unique=True, nullable=False)
     telefone = db.Column(db.String(11))
 
     endereco = db.relationship("Endereco", uselist=False)
-    login = db.relationship("Login", uselist=False)
+    #login = db.relationship("Login", uselist=False)
 
     # Herança: Superclasse
     tipo_pessoa = db.Column('tipo_pessoa', String(50))
     __mapper_args__ = {'polymorphic_on': tipo_pessoa}
 
-    def __init__(self, nome, nascimento, email, senha, telefone, endereco):
+    def __init__(self, nome, nascimento, email, telefone, endereco):
         self.nome = nome
         self.nascimento = nascimento
         self.email = email
-        self.senha = senha
         self.telefone = telefone
         self.endereco = endereco
 
