@@ -18,9 +18,6 @@ class SignIn(Resource):
     @marshal_with(login_fields)
     def get(self):
         current_app.logger.info("Get - Login")
-        args = parser.parse_args()
-        email = args["email"]
-        senha = args["senha"]
         login = db.session.execute(db.select(Login).filter_by(email=email, senha=senha)).one()
         return login, 200
 
