@@ -22,21 +22,21 @@ from model.veiculo import Veiculo_db
 
 #Resources
 
-from resources.cidade import Cidade
-from resources.funcionario import Funcionario
-from resources.gestorApp import GestorApp  
+from resources.cidade import Cidades
+from resources.funcionario import Funcionarios
+from resources.gestorApp import GestorApps 
 from resources.index import IndexResource
-from resources.instituicaoEnsino import InstituicaoDeEnsino
-from resources.endereco import Endereco
-from resources.rota import Rota
-from resources.pessoa import Pessoa
-from resources.aluno import Aluno
-from resources.prefeitura import Prefeitura
-from resources.prefeito import Prefeito
-from resources.passageiro import Passageiro
-from resources.motorista import Motorista
-from resources.uf import Uf
-from resources.veiculo import Veiculo
+from resources.instituicaoEnsino import InstituicaoDeEnsinos
+from resources.endereco import Enderecos
+from resources.rota import Rotas
+from resources.pessoa import Pessoas
+from resources.aluno import Alunos
+from resources.prefeitura import Prefeituras
+from resources.prefeito import Prefeitos
+from resources.passageiro import Passageiros
+from resources.motorista import Motoristas
+from resources.uf import Ufs
+from resources.veiculo import Veiculos
 
 from helpers.database import db, migrate
 
@@ -55,62 +55,18 @@ migrate.init_app(app, db)
 api = Api(app)
 
 api.add_resource(IndexResource, '/')
-api.add_resource(Endereco, '/enderecos')
-api.add_resource(Pessoa, '/pessoas')
-api.add_resource(Prefeitura, '/prefeituras')
-api.add_resource(Aluno, '/alunos')
-api.add_resource(InstituicaoDeEnsino, '/instituicoes')
-api.add_resource(Funcionario, '/funcionarios')
-api.add_resource(GestorApp, '/gestorApps')
-api.add_resource(Cidade, '/cidades')
-api.add_resource(Motorista, '/motoristas')
-api.add_resource(Passageiro, '/passageiros')
-api.add_resource(Rota, '/rotas')
-api.add_resource(Prefeito, '/prefeitos')
-api.add_resource(Uf, '/ufs')
-api.add_resource(Veiculo, '/veiculos')
+api.add_resource(Enderecos, '/enderecos')
+api.add_resource(Pessoas, '/pessoas')
+api.add_resource(Prefeituras, '/prefeituras')
+api.add_resource(Alunos, '/alunos')
+api.add_resource(InstituicaoDeEnsinos, '/instituicoes')
+api.add_resource(Funcionarios, '/funcionarios')
+api.add_resource(GestorApps, '/gestorApps')
+api.add_resource(Cidades, '/cidades')
+api.add_resource(Motoristas, '/motoristas')
+api.add_resource(Passageiros, '/passageiros')
+api.add_resource(Rotas, '/rotas')
+api.add_resource(Prefeitos, '/prefeitos')
+api.add_resource(Ufs, '/ufs')
+api.add_resource(Veiculos, '/veiculos')
 
-# pessoa = Pessoa("Juvenal", "28/11/2002", "email@juvenal", "93455-5452")
-# print(pessoa)
-
-# aluno = Aluno("Deris", "17/11/2001", "Deris@email", "934345-3321", "IFPB", "TSI", "2020201232",'Pessoa')
-# print(aluno)
-
-# cidade = Cidade("Guarabira", "GBA")
-# print(cidade)
-
-# endereco = Endereco("58340-000", "177", "Casa", "Próximo ao Afonso Júnior", "Rua Juscelino Kubistchek")
-# print(endereco)
-
-# prefeitura = Prefeitura("Marcelo", "email@Marcelo", "1587-5152", "Marcelo")
-# print(prefeitura)
-
-# funcionario = Funcionario(prefeitura, "Menino da Informática",'Pessoa')
-# print(funcionario)
-
-# veiculo = Veiculo("Guarabira", "44", "Ônibus", "GOS-7329",'Pessoa')
-# print(veiculo)
-
-
-# gestor = GestorApp(pessoa)
-# print(gestor)
-
-# instituto = InstituicaoDeEnsino("IFPB", "Rua Professor Carlos Leonardo Arcoverde", "98195-6465")
-# print(instituto)
-
-# motorista = Motorista("A ser determinado",funcionario)
-# print(motorista)
-
-
-# passageiro = Passageiro(aluno, "Sapé", "Guarabira")
-# print(passageiro)
-
-# pessoa2 = Pessoa("Sidney","22/12/2002","sidney@email","92234-2343")
-# prefeito = Prefeito(pessoa2)
-# print (prefeito)
-
-# rota = Rota("Guarabira", "44", "Sapé", "ônibus", "Jean", "06:00h", "07:00h")
-# print(rota)
-
-# uf = Uf("Paraíba", "PB")
-# print(uf)

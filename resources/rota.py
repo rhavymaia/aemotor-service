@@ -1,4 +1,4 @@
-from model.rota import Rota_db,Rota_fields
+from model.rota import Rota,rota_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -15,12 +15,12 @@ parser.add_argument('horaSaida', required=True)
 parser.add_argument('horaChegada', required=True)
 
 
-class Rota(Resource):
-    @marshal_with(Rota_fields)
+class Rotas(Resource):
+    @marshal_with(rota_fields)
     def get(self):
         current_app.logger.info("Get - Rota")
-        rota = Rota_db.query\
-            .order_by(Rota_db.nomeDestino)\
+        rota = Rota.query\
+            .order_by(Rota.nomeDestino)\
             .all()
         return rota, 200
     
@@ -38,7 +38,7 @@ class Rota(Resource):
             horaChegada = args['horaChegada']
             
             # Rota
-            rota = Rota_db(nomeDestino,qtdalunos,prefeitura,passageiro,veiculo,horaSaida,horaChegada)
+            rota = Rota(nomeDestino,qtdalunos,prefeitura,passageiro,veiculo,horaSaida,horaChegada)
             # Criação do Rota.
             db.session.add(rota)
             db.session.commit()
@@ -64,7 +64,7 @@ class Rota(Resource):
             horaSaida = args['horaSaida']
             horaChegada = args['horaChegada']
             
-            Rota_db.query \
+            Rota.query \
                 .filter_by(id=rota_id) \
                 .update(dict(nomeDestino=nomeDestino,qtdalunos = qtdalunos, veiculo = veiculo,passageiro = passageiro,horaSaida = horaSaida,horaChegada = horaChegada))
             db.session.commit()
@@ -77,7 +77,7 @@ class Rota(Resource):
     def delete(self, rota_id):
         current_app.logger.info("Delete - Rotas: %s:" % rota_id)
         try:
-            Rota_db.query.filter_by(id=rota_id).delete()
+            Rota.query.filter_by(id=rota_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

@@ -1,4 +1,4 @@
-from model.gestorApp import GestorApp_db
+from model.gestorApp import GestorApp
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -7,11 +7,11 @@ from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 parser = reqparse.RequestParser()
 parser.add_argument('gestorApp', required=True)
-class GestorApp(Resource):
+class GestorApps(Resource):
     def get(self):
         current_app.logger.info("Get - GestorApp")
-        gestor = GestorApp_db.query\
-            .order_by(GestorApp_db.gestorApp)\
+        gestor = GestorApp.query\
+            .order_by(GestorApp.gestorApp)\
             .all()
         return gestor, 200
     def post(self):
@@ -22,7 +22,7 @@ class GestorApp(Resource):
             gestorApp = args['gestorApp']
 
             # GestorApp
-            gestorAPP = GestorApp_db(gestorApp)
+            gestorAPP = GestorApp(gestorApp)
             # Criação do GestorApp.
             db.session.add(gestorAPP)
             db.session.commit()
@@ -45,7 +45,7 @@ class GestorApp(Resource):
             
     
 
-            GestorApp_db.query \
+            GestorApp.query \
                 .filter_by(id=gestorApp_id) \
                 .update(dict(gestorApp=gestorApp))
             db.session.commit()
@@ -58,7 +58,7 @@ class GestorApp(Resource):
     def delete(self, gestorApp_id):
         current_app.logger.info("Delete - GestorApp: %s:" % gestorApp_id)
         try:
-            GestorApp_db.query.filter_by(id=gestorApp_id).delete()
+            GestorApp.query.filter_by(id=gestorApp_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

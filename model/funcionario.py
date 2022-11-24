@@ -14,7 +14,7 @@ funcionario_fields = {
     'endereco': fields.Nested(endereco_fields)
 }
 
-class Funcionario_db(db.Model):
+class Funcionario(db.Model):
     __tablename__ = "tb_funcionario"
     __mapper_args__ = {'polymorphic_identity': 'funcionario'}
     
@@ -24,7 +24,7 @@ class Funcionario_db(db.Model):
     
     prefeitura_id = db.Column(db.Integer, db.ForeignKey('tb_prefeitura.id'), nullable=False)
     
-    motorista = db.relationship("Motorista_db", uselist=False)
+    motorista = db.relationship("Motorista", uselist=False)
     
     def __init__(self, nome, nascimento, email, telefone, endereco, prefeitura, cargo):
         super().__init__(nome, nascimento, email, telefone, endereco)

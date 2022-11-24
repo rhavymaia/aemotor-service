@@ -5,7 +5,7 @@ from flask import request,jsonify
 
 from helpers.database import db
 
-from model.endereco import Endereco_db
+from model.endereco import Endereco
 from model.error import Error, error_campos
 
 
@@ -16,10 +16,10 @@ parser.add_argument('referencia', required=True,location='args')
 parser.add_argument('logradouro', required=True,location='args')
 
 
-class Endereco(Resource):
+class Enderecos(Resource):
     def get(self):
         current_app.logger.info("Get - Endereços")
-        endereco = Endereco_db.query\
+        endereco = Endereco.query\
             .all()
         return endereco, 200
 
@@ -39,7 +39,7 @@ class Endereco(Resource):
            
 
             # Enderecodb
-            endereco = Endereco_db(cep,complemento,referencia,logradouro)
+            endereco = Endereco(cep,complemento,referencia,logradouro)
             # Criação do Enderecodb.
             db.session.add(endereco)
             db.session.commit()
@@ -62,7 +62,7 @@ class Endereco(Resource):
             complemento = args['complemento']
             referencia = args['referencia']
             logradouro = args['logradouro']
-            Endereco_db.query \
+            Endereco.query \
                 .filter_by(id=endereco_id) \
                 .update(dict(cep=cep,complemento=complemento,referencia=referencia,logradouro=logradouro))
             db.session.commit()
@@ -75,7 +75,7 @@ class Endereco(Resource):
     def delete(self, endereco_id):
         current_app.logger.info("Delete - Endereço: %s:" % endereco_id)
         try:
-            Endereco_db.query.filter_by(id=endereco_id).delete()
+            Endereco.query.filter_by(id=endereco_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

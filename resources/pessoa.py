@@ -1,4 +1,4 @@
-from model.pessoa import Pessoa_db
+from model.pessoa import Pessoa
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -15,11 +15,11 @@ parser.add_argument('telefone', required=True)
 
 
 
-class Pessoa(Resource):
+class Pessoas(Resource):
     def get(self):
         current_app.logger.info("Get - Pessoas ")
-        pessoa = Pessoa_db.query\
-            .order_by(Pessoa_db.email)\
+        pessoa = Pessoa.query\
+            .order_by(Pessoa.email)\
             .all()
         return pessoa, 200
     def post(self):
@@ -34,7 +34,7 @@ class Pessoa(Resource):
             telefone = args['telefone']
            
             # Pessoa
-            pessoa = Pessoa_db(nome,nascimento,email,telefone)
+            pessoa = Pessoa(nome,nascimento,email,telefone)
             # Criação do Pessoa.
             db.session.add(pessoa)
             db.session.commit()
@@ -59,7 +59,7 @@ class Pessoa(Resource):
             telefone = args['telefone']
             tipo_pessoa = args['tipo_pessoa']
 
-            Pessoa_db.query \
+            Pessoa.query \
                 .filter_by(id=pessoa_id) \
                 .update(dict(nome=nome,nascimento = nascimento, email = email, telefone = telefone,tipo_pessoa=tipo_pessoa))
             db.session.commit()
@@ -72,7 +72,7 @@ class Pessoa(Resource):
     def delete(self, pessoa_id):
         current_app.logger.info("Delete - Pessoas: %s:" % pessoa_id)
         try:
-            Pessoa_db.query.filter_by(id=pessoa_id).delete()
+            Pessoa.query.filter_by(id=pessoa_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

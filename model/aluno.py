@@ -16,7 +16,7 @@ Aluno_fields = {
     'endereco': fields.Nested(endereco_fields)
 }
 
-class Aluno_db(Pessoa_db,db.Model):
+class Aluno(Pessoa_db,db.Model):
   
     
     __tablename__ = 'tb_aluno'
@@ -28,8 +28,8 @@ class Aluno_db(Pessoa_db,db.Model):
     matricula = db.Column(db.String(20), nullable=False) 
     
     instituicao_child = db.relationship("InstituicaoDeEnsino_db", uselist=False)
-    rotas = db.relationship('Rota_db', backref='Rota_db', lazy=True)
-    passageiro_child = db.relationship('Passageiro_db',uselist=False)
+    rotas = db.relationship('Rota', backref='Rota', lazy=True)
+    passageiro_child = db.relationship('Passageiro',uselist=False)
     
 
     def __init__(self, nome, nascimento, email, telefone,endereco, instituicaoDeEnsino, curso, matricula,pessoa):

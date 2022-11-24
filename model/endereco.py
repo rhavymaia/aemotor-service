@@ -11,7 +11,7 @@ endereco_fields = {
 }
 
 
-class Endereco_db(db.Model):
+class Endereco(db.Model):
     
     __tablename__ = "tb_endereco"
     id = db.Column(db.Integer, primary_key=True)

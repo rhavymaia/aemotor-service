@@ -1,4 +1,4 @@
-from model.motorista import Motorista_db
+from model.motorista import Motorista
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -10,11 +10,11 @@ parser = reqparse.RequestParser()
 parser.add_argument('rotas', required=True)
 
 
-class Motorista(Resource):
+class Motoristas(Resource):
     def get(self):
         current_app.logger.info("Get - Motorista")
-        motorista = Motorista_db.query\
-            .order_by(Motorista_db.rotas)\
+        motorista = Motorista.query\
+            .order_by(Motorista.rotas)\
             .all()
         return motorista, 200
     def post(self):
@@ -25,7 +25,7 @@ class Motorista(Resource):
             rotas = args['rotas']
            
             # Motorista
-            motorista = Motorista_db(rotas)
+            motorista = Motorista(rotas)
             # Criação do Motorista.
             db.session.add(motorista)
             db.session.commit()
@@ -46,7 +46,7 @@ class Motorista(Resource):
             # Evento
             rotas = args['rotas']
 
-            Motorista_db.query \
+            Motorista.query \
                 .filter_by(id=motorista_id) \
                 .update(dict(rotas=rotas))
             db.session.commit()
@@ -59,7 +59,7 @@ class Motorista(Resource):
     def delete(self, motorista_id):
         current_app.logger.info("Delete - Motoristas: %s:" % motorista_id)
         try:
-            Motorista_db.query.filter_by(id=motorista_id).delete()
+            Motorista.query.filter_by(id=motorista_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

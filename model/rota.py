@@ -1,7 +1,7 @@
 from helpers.database import db
 from flask_restful import fields
 
-Rota_fields = {
+rota_fields = {
     'id': fields.Integer(attribute='id'),
     'nomeDestino': fields.String(attribute='nomeDestino'),
     'qtdalunos': fields.String(attribute='qtdalunos'),
@@ -12,7 +12,7 @@ Rota_fields = {
     'horaChegada': fields.String(attribute='horaChegada')
 }
 
-class Rota_db(db.Model):
+class Rota(db.Model):
     
     
     __tablename__ = 'tb_Rota'
@@ -26,8 +26,8 @@ class Rota_db(db.Model):
     horaSaida = db.Column(db.String(80), nullable=True)
     horaChegada = db.Column(db.String(80), nullable=True)
   
-    prefeitura_child = db.relationship("Prefeitura_db", uselist=False)
-    instituicoes = db.relationship('InstituicaoDeEnsino_db', backref='InstituicaoDeEnsino_db', lazy=True)
+    prefeitura_child = db.relationship("Prefeitura", uselist=False)
+    instituicoes = db.relationship('InstituicaoDeEnsino', backref='InstituicaoDeEnsino', lazy=True)
    
     def __init__(self, nomeDestino, qtdalunos, prefeitura, veiculo, passageiro, horaSaida, horaChegada):
         self.nomeDestino = nomeDestino

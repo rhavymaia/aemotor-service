@@ -1,5 +1,5 @@
 from helpers.database import db
-class InstituicaoDeEnsino_db(db.Model):
+class InstituicaoDeEnsino(db.Model):
     
     __tablename__ = 'tb_InstituicaoDeEnsino'
 
@@ -10,9 +10,7 @@ class InstituicaoDeEnsino_db(db.Model):
     aluno_id = db.Column(db.Integer, db.ForeignKey("tb_aluno.id_aluno"))
     rota_id = db.Column(db.Integer, db.ForeignKey('tb_Rota.id'), nullable=False)
     
-    endereco_child = db.relationship("Endereco_db", uselist=False)
-    aluno_id = db.Column(db.Integer, db.ForeignKey("tb_aluno.id_aluno"))
-    rota_id = db.Column(db.Integer, db.ForeignKey('tb_Rota.id'), nullable=False)
+    endereco_child = db.relationship("Endereco", uselist=False)
    
     def __init__(self, nome, logradouro, telefone):
         self.nome = nome

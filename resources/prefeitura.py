@@ -3,7 +3,7 @@ from model.error import Error, error_campos
 from sqlalchemy import exc
 from helpers.database import db
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
-from model.prefeitura import Prefeitura_db
+from model.prefeitura import Prefeitura
 
 parser = reqparse.RequestParser()
 parser.add_argument('nomePrefeito', required=True)
@@ -11,11 +11,11 @@ parser.add_argument('email', required=True)
 parser.add_argument('secretarios', required=True)
 parser.add_argument('telefone', required=True)
 
-class Prefeitura(Resource):
+class Prefeituras(Resource):
     def get(self):
         current_app.logger.info("Get - Prefeituras ")
-        prefeitura = Prefeitura_db.query\
-            .order_by(Prefeitura_db.email)\
+        prefeitura = Prefeitura.query\
+            .order_by(Prefeitura.email)\
             .all()
         return prefeitura, 200
     
@@ -29,7 +29,7 @@ class Prefeitura(Resource):
             secretarios = args['secretarios']
             telefone = args['telefone']
             # Prefeitura
-            prefeitura = Prefeitura_db(nomePrefeito,email,secretarios,telefone)
+            prefeitura = Prefeitura(nomePrefeito,email,secretarios,telefone)
             # Criação do Prefeitura.
             db.session.add(prefeitura)
             db.session.commit()
@@ -52,7 +52,7 @@ class Prefeitura(Resource):
             email = args['email']
             secretarios = args['secretarios']
             telefone = args['telefone']
-            Prefeitura_db.query \
+            Prefeitura.query \
                 .filter_by(id=prefeitura_id) \
                 .update(dict(nomePrefeito=nomePrefeito,email=email,secretarios=secretarios,telefone=telefone))
             db.session.commit()
@@ -65,7 +65,7 @@ class Prefeitura(Resource):
     def delete(self, prefeitura_id):
         current_app.logger.info("Delete - Prefeitura: %s:" % prefeitura_id)
         try:
-            Prefeitura_db.query.filter_by(id=prefeitura_id).delete()
+            Prefeitura.query.filter_by(id=prefeitura_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

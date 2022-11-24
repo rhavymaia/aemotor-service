@@ -1,4 +1,4 @@
-from model.funcionario import Funcionario_db,funcionario_fields
+from model.funcionario import Funcionario,funcionario_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -6,7 +6,7 @@ from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 from helpers.database import db
-from model.endereco import Endereco_db
+from model.endereco import Endereco
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
@@ -19,12 +19,12 @@ parser.add_argument('prefeitura', required=True)
 parser.add_argument('cargo', required=True)
 
 
-class Funcionario(Resource):
+class Funcionarios(Resource):
     @marshal_with(funcionario_fields)
     def get(self):
         current_app.logger.info("Get - Funcionarios")
-        funcionario = Funcionario_db.query\
-            .order_by(Funcionario_db.cargo)\
+        funcionario = Funcionario.query\
+            .order_by(Funcionario.cargo)\
             .all()
         return funcionario, 200
     def post(self):
@@ -36,20 +36,20 @@ class Funcionario(Resource):
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
-            #Endereco_db
+            #Endereco
             cep = args['endereco']['cep']
             numero = args['endereco']['numero']
             complemento = args['endereco']['complemento']
             referencia = args['endereco']['referencia']
             logradouro = args['endereco']['logradouro']
-            endereco = Endereco_db(cep, numero, complemento,
+            endereco = Endereco(cep, numero, complemento,
                                 referencia, logradouro)
 
             prefeitura = args['prefeitura']
             cargo = args['cargo']
 
             # Funcionario
-            funcionario = Funcionario_db(
+            funcionario = Funcionario(
                 nome, nascimento, email, telefone, endereco, prefeitura, cargo)
             # Criação do Funcionario.
             db.session.add(funcionario)
@@ -73,7 +73,7 @@ class Funcionario(Resource):
             cargo = args['cargo']
     
 
-            Funcionario_db.query \
+            Funcionario.query \
                 .filter_by(id=funcionario_id) \
                 .update(dict(prefeitura=prefeitura,cargo = cargo ))
             db.session.commit()
@@ -86,7 +86,7 @@ class Funcionario(Resource):
     def delete(self, funcionario_id):
         current_app.logger.info("Delete - Funcionarios: %s:" % funcionario_id)
         try:
-            Funcionario_db.query.filter_by(id=funcionario_id).delete()
+            Funcionario.query.filter_by(id=funcionario_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

@@ -1,5 +1,5 @@
 from helpers.database import db
-class Uf_db(db.Model):
+class Uf(db.Model):
     __tablename__ = 'tb_uf'
 
     id = db.Column(db.Integer, primary_key=True)
