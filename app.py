@@ -4,21 +4,21 @@ from flask_cors import CORS
 
 #Model
 
-from model.endereco import Endereco_db
-from model.pessoa import Pessoa_db
-from model.aluno import Aluno_db
-from model.funcionario import Funcionario_db
-from model.gestorApp import GestorApp_db
-from model.instituicaoDeEnsino import InstituicaoDeEnsino_db
-from model.motorista import Motorista_db
-from model.passageiro import Passageiro_db
-from model.pessoa import Pessoa_db
-from model.prefeito import Prefeito_db
-from model.prefeitura import Prefeitura_db
-from model.rota import Rota_db
-from model.cidade import Cidade_db
-from model.uf import Uf_db
-from model.veiculo import Veiculo_db
+from model.endereco import Endereco
+from model.pessoa import Pessoa
+from model.aluno import Aluno
+from model.funcionario import Funcionario
+from model.gestorApp import GestorApp
+from model.instituicaoDeEnsino import InstituicaoDeEnsino
+from model.motorista import Motorista
+from model.passageiro import Passageiro
+from model.pessoa import Pessoa
+from model.prefeito import Prefeito
+from model.prefeitura import Prefeitura
+from model.rota import Rota
+from model.cidade import Cidade
+from model.uf import Uf
+from model.veiculo import Veiculo
 
 #Resources
 
@@ -55,17 +55,18 @@ migrate.init_app(app, db)
 api = Api(app)
 
 api.add_resource(IndexResource, '/')
-api.add_resource(Enderecos, '/enderecos')
-api.add_resource(Pessoas, '/pessoas')
-api.add_resource(Prefeituras, '/prefeituras')
-api.add_resource(Alunos, '/alunos')
-api.add_resource(InstituicaoDeEnsinos, '/instituicoes')
-api.add_resource(Funcionarios, '/funcionarios')
-api.add_resource(GestorApps, '/gestorApps')
-api.add_resource(Cidades, '/cidades')
-api.add_resource(Motoristas, '/motoristas')
-api.add_resource(Passageiros, '/passageiros')
-api.add_resource(Rotas, '/rotas')
-api.add_resource(Prefeitos, '/prefeitos')
-api.add_resource(Ufs, '/ufs')
-api.add_resource(Veiculos, '/veiculos')
+api.add_resource(Endereco, '/enderecos')
+api.add_resource(Pessoa, '/pessoas')
+api.add_resource(Prefeitura, '/prefeituras')
+api.add_resource(Aluno, '/alunos')
+api.add_resource(InstituicaoDeEnsino, '/instituicoes')
+api.add_resource(Funcionario, '/funcionarios')
+api.add_resource(GestorApp, '/gestorApps')
+api.add_resource(Cidade, '/cidades')
+api.add_resource(Motorista, '/motoristas')
+api.add_resource(Passageiro, '/passageiros')
+api.add_resource(Rota, '/rotas')
+api.add_resource(Prefeito, '/prefeitos')
+api.add_resource(Uf, '/ufs')
+api.add_resource(Veiculo, '/veiculos')
+
