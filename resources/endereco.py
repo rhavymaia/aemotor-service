@@ -3,9 +3,9 @@ from sqlalchemy import exc
 
 from helpers.database import db
 
-from model.endereco import Endereco
-
 from model.error import Error, error_campos
+
+from model.endereco import Endereco
 
 
 parser = reqparse.RequestParser()

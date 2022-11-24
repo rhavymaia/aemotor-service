@@ -17,7 +17,6 @@ class Aluno(Pessoa, db.Model):
         self.instituicaoDeEnsino = instituicaoDeEnsino
         self.curso = curso
         self.matricula = matricula
-        self.endereco = endereco  # não mapeado ainda!
 
     def __repr__(self):
         return '<Nome: {}\n Nascimento: {}\n Email: {}\n Telefone: {}\n Instituição de ensino: {}\n Curso: {}\n Matrícula: {}>'.format(self.nome, self.nascimento, self.email, self.telefone, self.instituicaoDeEnsino, self.curso, self.matricula)
