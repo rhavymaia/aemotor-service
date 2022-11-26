@@ -1,3 +1,4 @@
+from sqlalchemy import ForeignKey
 from model.pessoa import Pessoa
 from helpers.database import db
 
@@ -7,6 +8,8 @@ class Funcionario (Pessoa, db.Model):
     __tablename__ = "tb_funcionario"
     __mapper_args__ = {'polymorphic_identity': 'funcionario'}
 
+    id = db.Column(ForeignKey("tb_pessoa.id"), primary_key=True)
+    prefeitura = db.Column(db.String, nullable=False)
     cargo = db.Column(db.String, nullable=False)
 
     def __init__(self, nome, nascimento, email, telefone, prefeitura, cargo):

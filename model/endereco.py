@@ -1,4 +1,17 @@
 from helpers.database import db
+from dataclasses import fields
+from model.cidade import Cidade, cidade_fields
+
+
+endereco_fields = {
+    'id': fields.Integer(attribute='id'),
+    'cep': fields.String(attribute='cep'),
+    'numero': fields.String(attribute='numero'),
+    'complemento': fields.String(attribute='complemento'),
+    'referencia': fields.String(attribute='referencia'),
+    'logradouro': fields.String(attribute='logradouro'),
+    'cidade': fields.Nested(cidade_fields)
+}
 
 
 class Endereco(db.Model):
@@ -13,13 +26,18 @@ class Endereco(db.Model):
     logradouro = db.Column(db.String, nullable=False)
 
     pessoa_id = db.Column(db.Integer, db.ForeignKey("tb_pessoa.id"))
+    #instituicaoEnsino_parent = db.Column(db.Integer, db.ForeignKey("tb_instituicaoEnsino.id"))
 
-    def __init__(self, cep, numero, complemento, referencia, logradouro):
+    cidade_id = db.Column(db.Integer, db.ForeignKey("tb_cidade.id"))
+    cidade = db.relationship("Cidade", uselist=False)
+
+    def __init__(self, cep, numero, complemento, referencia, logradouro, cidade: Cidade):
         self.cep = cep
         self.numero = numero
         self.complemento = complemento
         self.referencia = referencia
         self.logradouro = logradouro
+        self.cidade = cidade
 
     def __repr__(self):
         return '<Cep: {}\n Numero: {}\n Complemento: {}\n Referencia: {}\n Logradouro: {}>'.format(self.cep, self.numero, self.complemento, self.referencia, self.logradouro)

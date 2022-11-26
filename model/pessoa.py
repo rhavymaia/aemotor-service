@@ -12,7 +12,7 @@ class Pessoa(db.Model):
     telefone = db.Column(db.String(11))
 
     endereco = db.relationship("Endereco", uselist=False)
-    #login = db.relationship("Login", uselist=False)
+    login = db.relationship("Login", uselist=False)
 
     # Herança: Superclasse
     tipo_pessoa = db.Column('tipo_pessoa', String(50))
