@@ -4,12 +4,16 @@ from sqlalchemy import exc
 from helpers.database import db
 from model.funcionario import Funcionario, funcionario_fields
 from model.endereco import Endereco
+from model.cidade import Cidade
+from model.uf import Uf
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
+parser.add_argument('senha', required=True,
+                    help="Senha é campo obrigatório.")
 parser.add_argument('telefone', required=True)
 parser.add_argument('endereco', type=dict, required=True)
 parser.add_argument('prefeitura', required=True)
@@ -37,6 +41,7 @@ class Funcionarios(Resource):
             nome = args['nome']
             nascimento = args['nascimento']
             email = args['email']
+            senha = args['senha']
             telefone = args['telefone']
 
             # Endereco
@@ -46,15 +51,23 @@ class Funcionarios(Resource):
             complemento = enderecoArgs['complemento']
             referencia = enderecoArgs['referencia']
             logradouro = enderecoArgs['logradouro']
+            cidade = enderecoArgs['cidade']
+            nomeCidade = cidade['nome']
+            siglaCidade = cidade['sigla']
+            uf = cidade['uf']
+            nomeUf = uf['nome']
+            siglaUf = uf['sigla']
+
+            cidade = Cidade(nomeCidade, siglaCidade, Uf(nomeUf, siglaUf))
             endereco = Endereco(cep, numero, complemento,
-                                referencia, logradouro)
+                                referencia, logradouro, cidade)
 
             prefeitura = args['prefeitura']
             cargo = args['cargo']
 
             # Funcionário
             funcionario = Funcionario(
-                nome, nascimento, email, telefone, endereco, prefeitura, cargo)
+                nome, nascimento, email, senha, telefone, endereco, prefeitura, cargo)
 
             # Criação do Funcionário.
             db.session.add(funcionario)

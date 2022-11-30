@@ -1,7 +1,7 @@
 from helpers.database import db
 from flask_restful import fields
 
-from uf import Uf, uf_fields
+from model.uf import Uf, uf_fields
 
 cidade_fields = {
     'id': fields.Integer(attribute='id'),

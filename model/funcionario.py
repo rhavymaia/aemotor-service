@@ -10,6 +10,7 @@ funcionario_fields = {
     'nome': fields.String(attribute='nome'),
     'nascimento': fields.String(attribute='nascimento'),
     'email': fields.String(attribute='email'),
+    'senha': fields.String(attribute='senha'),
     'telefone': fields.String(attribute='telefone'),
     'prefeitura': fields.String(attribute='prefeitura'),
     'cargo': fields.String(attribute='cargo'),
@@ -26,8 +27,8 @@ class Funcionario(Pessoa, db.Model):
     prefeitura = db.Column(db.String, nullable=False)
     cargo = db.Column(db.String, nullable=False)
 
-    def __init__(self, nome, nascimento, email, telefone, endereco, prefeitura, cargo):
-        super().__init__(nome, nascimento, email, telefone, endereco)
+    def __init__(self, nome, nascimento, email, senha, telefone, endereco, prefeitura, cargo):
+        super().__init__(nome, nascimento, email, senha, telefone, endereco)
         self.prefeitura = prefeitura
         self.cargo = cargo
 

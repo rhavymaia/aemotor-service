@@ -1,13 +1,14 @@
 from model.pessoa import Pessoa
 from helpers.database import db
+from sqlalchemy import ForeignKey
 
 
 class Aluno(Pessoa, db.Model):
 
     __tablename__ = "tb_aluno"
-    __mapper_args__ = {'polymorphic_identity': 'aluno', 'concrete': True}
+    __mapper_args__ = {'polymorphic_identity': 'aluno'}
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(ForeignKey("tb_pessoa.id"), primary_key=True)
     instituicaoDeEnsino = db.Column(db.String, nullable=False)
     curso = db.Column(db.String, nullable=False)
     matricula = db.Column(db.String, unique=True, nullable=False)
