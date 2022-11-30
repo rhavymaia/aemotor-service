@@ -9,10 +9,6 @@ from resources.login import Login
 
 from helpers.database import db, migrate
 
-from model.endereco import Endereco
-from model.pessoa import Pessoa
-from model.aluno import Aluno
-
 # CORS
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -28,7 +24,8 @@ api = Api(app)
 
 api.add_resource(Enderecos, '/enderecos')
 api.add_resource(Funcionarios, '/funcionarios')
+
 api.add_resource(Login, '/login')
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
