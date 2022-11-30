@@ -1,4 +1,5 @@
-from model.pessoa import Pessoa
+from model.pessoa import Pessoa,pessoa_fields
+from model.endereco import Endereco
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -11,11 +12,14 @@ parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
 parser.add_argument('telefone', required=True)
+parser.add_argument('endereco', type=dict, required=True)
+
 
 
 
 
 class Pessoas(Resource):
+    @marshal_with(pessoa_fields)
     def get(self):
         current_app.logger.info("Get - Pessoas ")
         pessoa = Pessoa.query\
@@ -33,8 +37,15 @@ class Pessoas(Resource):
             email = args['email']
             telefone = args['telefone']
            
+            cep = args['endereco']['cep']
+            numero = args['endereco']['numero']
+            complemento = args['endereco']['complemento']
+            referencia = args['endereco']['referencia']
+            logradouro = args['endereco']['logradouro']
+            endereco = Endereco(cep, numero, complemento,
+                                referencia, logradouro)
             # Pessoa
-            pessoa = Pessoa(nome,nascimento,email,telefone)
+            pessoa = Pessoa(nome,nascimento,email,telefone,endereco)
             # Criação do Pessoa.
             db.session.add(pessoa)
             db.session.commit()

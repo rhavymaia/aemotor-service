@@ -1,11 +1,8 @@
-from model.funcionario import Funcionario,funcionario_fields
-from model.error import Error, error_campos
-from helpers.database import db
-from flask import jsonify
+from flask_restful import Resource, reqparse, current_app, marshal, marshal_with
 from sqlalchemy import exc
-from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 
 from helpers.database import db
+from model.funcionario import Funcionario, funcionario_fields
 from model.endereco import Endereco
 from model.error import Error, error_campos
 
@@ -18,17 +15,22 @@ parser.add_argument('endereco', type=dict, required=True)
 parser.add_argument('prefeitura', required=True)
 parser.add_argument('cargo', required=True)
 
+'''
+  Classe Funcionário.
+'''
+
 
 class Funcionarios(Resource):
+
     @marshal_with(funcionario_fields)
     def get(self):
         current_app.logger.info("Get - Funcionarios")
-        funcionario = Funcionario.query\
-            .order_by(Funcionario.cargo)\
+        funcionarios = Funcionario.query\
             .all()
-        return funcionario, 200
+        return funcionarios, 200
+
     def post(self):
-        current_app.logger.info("Post - Funcionarios")
+        current_app.logger.info("Post - Funcionario")
         try:
             # JSON
             args = parser.parse_args()
@@ -36,7 +38,8 @@ class Funcionarios(Resource):
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
-            #Endereco
+
+            # Endereco
             cep = args['endereco']['cep']
             numero = args['endereco']['numero']
             complemento = args['endereco']['complemento']
@@ -48,10 +51,10 @@ class Funcionarios(Resource):
             prefeitura = args['prefeitura']
             cargo = args['cargo']
 
-            # Funcionario
+            # Funcionário
             funcionario = Funcionario(
                 nome, nascimento, email, telefone, endereco, prefeitura, cargo)
-            # Criação do Funcionario.
+            # Criação do Funcionário.
             db.session.add(funcionario)
             db.session.commit()
         except exc.SQLAlchemyError as err:

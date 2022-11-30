@@ -12,7 +12,6 @@ class Prefeitura(db.Model):
     prefeito = db.relationship("Prefeito", uselist=False)
     cidade = db.Column(db.Integer, db.ForeignKey("tb_cidade.id"))
     gestores = db.relationship('GestorApp', backref='GestorApp', lazy=True)
-    funcionarios = db.relationship('Funcionario', backref='Funcionario', lazy=True)
     
     def __init__(self, secretarios, email, telefone, nomePrefeito):
         self.secretarios = secretarios

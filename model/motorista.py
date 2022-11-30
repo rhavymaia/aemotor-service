@@ -1,11 +1,11 @@
-from model.funcionario import Funcionario
 from helpers.database import db
+from sqlalchemy import ForeignKey
 
-class Motorista(Funcionario,db.Model):
+class Motorista(db.Model):
     __tablename__ = 'tb_motorista'
-    __mapper_args__ = {'polymorphic_identity': 'motorista'}
+    __mapper_args__ = {'polymorphic_identity': 'Motorista'}
     
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(ForeignKey("tb_pessoa.id"), primary_key=True)
     rotas = db.Column(db.String(80), nullable=False)
     
     

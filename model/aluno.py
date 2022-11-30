@@ -1,10 +1,11 @@
-from model.pessoa import Pessoa_db
+from model.pessoa import Pessoa
 from model.endereco import endereco_fields
+from flask_restful import fields
 from helpers.database import db
 from sqlalchemy import ForeignKey
-from flask_restful import fields
 
-Aluno_fields = {
+
+aluno_fields = {
     'id': fields.Integer(attribute='id'),
     'nome': fields.String(attribute='nome'),
     'nascimento': fields.String(attribute='nascimento'),
@@ -16,28 +17,26 @@ Aluno_fields = {
     'endereco': fields.Nested(endereco_fields)
 }
 
-class Aluno(Pessoa_db,db.Model):
+class Aluno(Pessoa,db.Model):
   
     
     __tablename__ = 'tb_aluno'
     __mapper_args__ = {'polymorphic_identity': 'aluno'}
 
-    id_aluno = db.Column(ForeignKey("tb_pessoa.id"), primary_key=True)
+    id = db.Column(ForeignKey("tb_pessoa.id"), primary_key=True)
     instituicaoDeEnsino = db.Column(db.String(80), nullable=False)
     curso = db.Column(db.String(50), nullable=False)
     matricula = db.Column(db.String(20), nullable=False) 
     
     instituicao = db.relationship("InstituicaoDeEnsino", uselist=False)
-    rotas = db.relationship('Rota', backref='Rota', lazy=True)
-    passageiro = db.relationship('Passageiro',uselist=False)
     
 
-    def __init__(self, nome, nascimento, email, telefone,endereco, instituicaoDeEnsino, curso, matricula,pessoa):
-        super().__init__(nome, nascimento, email, telefone,endereco)
+    def __init__(self, nome, nascimento, email, telefone,endereco, instituicaoDeEnsino, curso, matricula):
+        super().__init__(nome, nascimento, email, telefone, endereco)
         self.instituicaoDeEnsino = instituicaoDeEnsino
         self.curso = curso
         self.matricula = matricula
         
     
     def __repr__(self):
-        return '\nNome:{}\n Nascimento: {}\n Email: {}\n Telefone: {}\n Instituto: {}\n Curso: {}\n Matrícula: {}'.format(self.nome, self.nascimento, self.email, self.telefone, self.instituicaoDeEnsino, self.curso, self.matricula)
+        return '<Aluno - Nome: {}\n>'.format(self.nome)

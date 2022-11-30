@@ -4,7 +4,7 @@ from helpers.database import db
 from flask import jsonify
 from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
-from model.endereco import Endereco_db
+from model.endereco import Endereco
 
 parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
@@ -34,19 +34,20 @@ class Alunos(Resource):
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
-            instituicaoDeEnsino = args['instituicaoDeEnsino']
-            curso = args['curso']
-            matricula = args['matricula']
+            
              #Endereco_db
             cep = args['endereco']['cep']
             numero = args['endereco']['numero']
             complemento = args['endereco']['complemento']
             referencia = args['endereco']['referencia']
             logradouro = args['endereco']['logradouro']
-            endereco = Endereco_db(cep, numero, complemento,
+            endereco = Endereco(cep, numero, complemento,
                                 referencia, logradouro)
+            instituicaoDeEnsino = args['instituicaoDeEnsino']
+            curso = args['curso']
+            matricula = args['matricula']
             # Alunodb
-            aluno = Aluno( nome, nascimento, email, telefone, endereco,instituicaoDeEnsino,curso,matricula)
+            aluno = Aluno( nome, nascimento, email, telefone,endereco,instituicaoDeEnsino,curso,matricula)
             # Criação do Alunodb.
             db.session.add(aluno)
             db.session.commit()

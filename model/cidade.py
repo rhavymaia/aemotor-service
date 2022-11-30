@@ -1,4 +1,11 @@
 from helpers.database import db
+from flask_restful import fields
+
+cidade_fields = {
+    'id': fields.Integer(attribute='id'),
+    'nome': fields.String(attribute='nome'),
+    'sigla': fields.String(attribute='sigla')}
+
 class Cidade(db.Model):
     __tablename__ = 'tb_cidade'
 

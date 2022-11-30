@@ -1,4 +1,4 @@
-from model.passageiro import Passageiro
+from model.passageiro import Passageiro,passageiro_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -11,7 +11,7 @@ parser.add_argument('cidadeOrigem', required=True)
 parser.add_argument('cidadeDestino', required=True)
 
 class Passageiros(Resource):
-    
+    @marshal_with(passageiro_fields)
     def get(self):
         current_app.logger.info("Get - Passageiro")
         passageiro = Passageiro.query\

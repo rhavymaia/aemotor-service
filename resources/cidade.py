@@ -1,4 +1,4 @@
-from model.cidade import Cidade
+from model.cidade import Cidade,cidade_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
@@ -11,6 +11,7 @@ parser.add_argument('sigla', required=True)
 
 
 class Cidades(Resource):
+    @marshal_with(cidade_fields)
     def get(self):
         current_app.logger.info("Get - Cidades")
         cidade = Cidade.query\

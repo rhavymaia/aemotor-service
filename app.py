@@ -12,7 +12,6 @@ from model.gestorApp import GestorApp
 from model.instituicaoDeEnsino import InstituicaoDeEnsino
 from model.motorista import Motorista
 from model.passageiro import Passageiro
-from model.pessoa import Pessoa
 from model.prefeito import Prefeito
 from model.prefeitura import Prefeitura
 from model.rota import Rota
@@ -58,7 +57,10 @@ api.add_resource(IndexResource, '/')
 api.add_resource(Enderecos, '/enderecos')
 api.add_resource(Pessoas, '/pessoas')
 api.add_resource(Prefeituras, '/prefeituras')
+
 api.add_resource(Alunos, '/alunos')
+# api.add_resource(Alunos, '/alunos/<int:id>')
+
 api.add_resource(InstituicaoDeEnsinos, '/instituicoes')
 api.add_resource(Funcionarios, '/funcionarios')
 api.add_resource(GestorApps, '/gestorApps')
