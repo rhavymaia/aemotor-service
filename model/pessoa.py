@@ -1,7 +1,18 @@
 from helpers.database import db
 from sqlalchemy.types import String
+from flask_restful import fields
 
-from model.endereco import Endereco
+from model.endereco import Endereco, endereco_fields
+
+pessoa_fields = {
+    'id': fields.Integer(attribute='id'),
+    'nome': fields.String(attribute='nome'),
+    'nascimento': fields.String(attribute='nascimento'),
+    'email': fields.String(attribute='email'),
+    'senha': fields.String(attribute='senha'),
+    'telefone': fields.String(attribute='telefone'),
+    'endereco': fields.Nested(endereco_fields)
+}
 
 
 class Pessoa(db.Model):
