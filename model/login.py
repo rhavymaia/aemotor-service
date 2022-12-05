@@ -15,7 +15,9 @@ class Login(Pessoa, db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
 
+
     pessoa_id = db.Column(db.Integer, db.ForeignKey("tb_pessoa.id"))
+
 
     def __init__(self, nome, nascimento, email, senha, telefone, endereco):
         super().__init__(nome, nascimento, email, senha, telefone, endereco)

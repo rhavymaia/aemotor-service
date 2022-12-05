@@ -1,4 +1,4 @@
-# from dataclasses import fields
+#from flask_restful import fields
 # from helpers.database import db
 # from model.endereco import Endereco, endereco_fields
 

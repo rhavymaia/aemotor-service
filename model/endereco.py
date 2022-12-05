@@ -1,5 +1,5 @@
 from helpers.database import db
-from dataclasses import fields
+from flask_restful import fields
 from model.cidade import Cidade, cidade_fields
 
 
