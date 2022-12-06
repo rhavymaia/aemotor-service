@@ -5,12 +5,9 @@ from flask_cors import CORS
 from helpers.database import db, migrate
 
 
-from model.pessoa import Pessoa
-from model.aluno import Aluno
 from model.convites import Convites
 
 from resources.convites import ConvitesResource
-from resources.endereco import EnderecoResource
 # CORS
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
@@ -24,10 +21,9 @@ db.init_app(app)
 migrate.init_app(app, db)
 
 api = Api(app)
-mail = Mail(app)
 convite = Convites("email@gmail.com", "Venha se cadastrar no nosso aplicativo")
 print(convite)
-api.add_resource(ConvitesResource, '/convite')
+api.add_resource(ConvitesResource, '/prefeitura/convite')
 
 
 
