@@ -22,7 +22,12 @@ class Login(Resource):
             email = args['email']
             senha = args['senha']
 
-            db.select(Pessoa).filter_by(email=email, senha=senha)
+            usuario = Pessoa.query.filter_by(email=email, senha=senha).first()
+
+            if usuario is None:
+                return 401
+            else:
+                return 200
 
         except exc.SQLAlchemyError as err:
 
