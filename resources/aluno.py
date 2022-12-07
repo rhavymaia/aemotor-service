@@ -5,6 +5,8 @@ from flask import jsonify
 from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 from model.endereco import Endereco
+from model.cidade import Cidade
+from model.uf import Uf
 
 parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
@@ -34,20 +36,27 @@ class Alunos(Resource):
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
-            
-             #Endereco_db
-            cep = args['endereco']['cep']
-            numero = args['endereco']['numero']
-            complemento = args['endereco']['complemento']
-            referencia = args['endereco']['referencia']
-            logradouro = args['endereco']['logradouro']
-            endereco = Endereco(cep, numero, complemento,
-                                referencia, logradouro)
             instituicaoDeEnsino = args['instituicaoDeEnsino']
             curso = args['curso']
             matricula = args['matricula']
+            #Endereco
+            enderecoArgs = args['endereco']
+            cep = enderecoArgs['cep']
+            numero = enderecoArgs['numero']
+            complemento = enderecoArgs['complemento']
+            referencia = enderecoArgs['referencia']
+            logradouro = enderecoArgs['logradouro']
+            cidade = enderecoArgs['cidade']
+            nomeCidade = cidade['nome']
+            siglaCidade = cidade['sigla']
+            uf = cidade['uf']
+            nomeUf = uf['nome']
+            siglaUf = uf['sigla']
+
+            cidade = Cidade(nomeCidade, siglaCidade, Uf(nomeUf, siglaUf))
+            endereco = Endereco(cep, numero, complemento,referencia, logradouro, cidade)
             # Alunodb
-            aluno = Aluno( nome, nascimento, email, telefone,endereco,instituicaoDeEnsino,curso,matricula)
+            aluno = Aluno( nome, nascimento, email, telefone, endereco,instituicaoDeEnsino,curso,matricula)
             # Criação do Alunodb.
             db.session.add(aluno)
             db.session.commit()
@@ -59,7 +68,7 @@ class Alunos(Resource):
 
         return 204
     
-    def put(self, aluno_id):
+    def put(self, id):
         current_app.logger.info("Put - Alunos")
         try:
             # Parser JSON
@@ -71,7 +80,7 @@ class Alunos(Resource):
             matricula = args['matricula']
 
             Aluno.query \
-                .filter_by(id=aluno_id) \
+                .filter_by(id=id) \
                 .update(dict(instituicaoDeEnsino=instituicaoDeEnsino,curso = curso, matricula = matricula))
             db.session.commit()
 
@@ -80,10 +89,10 @@ class Alunos(Resource):
 
         return 204
     
-    def delete(self, aluno_id):
-        current_app.logger.info("Delete - Alunodb: %s:" % aluno_id)
+    def delete(self, id):
+        current_app.logger.info("Delete - Alunodb: %s:" % id)
         try:
-            Aluno.query.filter_by(id=aluno_id).delete()
+            Aluno.query.filter_by(id=id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:

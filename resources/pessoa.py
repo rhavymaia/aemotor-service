@@ -1,93 +1,76 @@
-from model.pessoa import Pessoa,pessoa_fields
-from model.endereco import Endereco
-from model.error import Error, error_campos
-from helpers.database import db
-from flask import jsonify
+from flask_restful import Resource, reqparse, current_app, marshal, marshal_with
 from sqlalchemy import exc
-from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
+
+from helpers.database import db
+from model.pessoa import Pessoa, pessoa_fields
+from model.endereco import Endereco
+from model.cidade import Cidade
+from model.uf import Uf
+from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
-
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
+parser.add_argument('senha', required=True,
+                    help="Senha é campo obrigatório.")
 parser.add_argument('telefone', required=True)
 parser.add_argument('endereco', type=dict, required=True)
 
+'''
+  Classe Pessoa.
+'''
 
 
+class Pessoa(Resource):
 
-
-class Pessoas(Resource):
     @marshal_with(pessoa_fields)
     def get(self):
-        current_app.logger.info("Get - Pessoas ")
-        pessoa = Pessoa.query\
-            .order_by(Pessoa.email)\
+        current_app.logger.info("Get - Pessoas")
+        funcionarios = Pessoa.query.filter_by(senha = senha)\
             .all()
-        return pessoa, 200
+        return funcionarios, 200
+
     def post(self):
-        current_app.logger.info("Post - Pessoas")
+        current_app.logger.info("Post - Funcionario")
         try:
             # JSON
             args = parser.parse_args()
-        
             nome = args['nome']
             nascimento = args['nascimento']
             email = args['email']
+            senha = args['senha']
             telefone = args['telefone']
-           
-            cep = args['endereco']['cep']
-            numero = args['endereco']['numero']
-            complemento = args['endereco']['complemento']
-            referencia = args['endereco']['referencia']
-            logradouro = args['endereco']['logradouro']
+
+            # Endereco
+            enderecoArgs = args['endereco']
+            cep = enderecoArgs['cep']
+            numero = enderecoArgs['numero']
+            complemento = enderecoArgs['complemento']
+            referencia = enderecoArgs['referencia']
+            logradouro = enderecoArgs['logradouro']
+            cidade = enderecoArgs['cidade']
+            nomeCidade = cidade['nome']
+            siglaCidade = cidade['sigla']
+            uf = cidade['uf']
+            nomeUf = uf['nome']
+            siglaUf = uf['sigla']
+
+            cidade = Cidade(nomeCidade, siglaCidade, Uf(nomeUf, siglaUf))
             endereco = Endereco(cep, numero, complemento,
-                                referencia, logradouro)
+                                referencia, logradouro, cidade)
             # Pessoa
-            pessoa = Pessoa(nome,nascimento,email,telefone,endereco)
+            pessoa = Pessoa(
+                nome, nascimento, email, senha, telefone, endereco)
+
             # Criação do Pessoa.
             db.session.add(pessoa)
             db.session.commit()
+
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
             erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
                          err.__cause__())
             return marshal(erro, error_campos), 500
-
-        return 204
-    
-    def put(self, pessoa_id):
-        current_app.logger.info("Put - Pessoas")
-        try:
-            # Parser JSON
-            args = parser.parse_args()
-            current_app.logger.info("Pessoa: %s:" % args)
-            # Evento
-            nome = args['nome']
-            nascimento = args['nascimento']
-            email = args['email']
-            telefone = args['telefone']
-            tipo_pessoa = args['tipo_pessoa']
-
-            Pessoa.query \
-                .filter_by(id=pessoa_id) \
-                .update(dict(nome=nome,nascimento = nascimento, email = email, telefone = telefone,tipo_pessoa=tipo_pessoa))
-            db.session.commit()
-
-        except exc.SQLAlchemyError:
-            current_app.logger.error("Exceção")
-
-        return 204
-    
-    def delete(self, pessoa_id):
-        current_app.logger.info("Delete - Pessoas: %s:" % pessoa_id)
-        try:
-            Pessoa.query.filter_by(id=pessoa_id).delete()
-            db.session.commit()
-
-        except exc.SQLAlchemyError:
-            current_app.logger.error("Exceção")
-            return 404
 
         return 204

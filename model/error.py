@@ -12,7 +12,7 @@ error_campos = {
 '''
 
 
-class Error:
+class Error():
     def __init__(self, codigo, mensagem, detalhe):
         self.codigo = codigo
         self.mensagem = mensagem
