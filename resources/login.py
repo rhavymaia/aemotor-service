@@ -5,7 +5,7 @@ from datetime import datetime
 
 from helpers.database import db
 from model.pessoa import Pessoa
-from model.login import Login
+from model.login import Login, login_campos
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
@@ -30,23 +30,16 @@ class Logins(Resource):
             # db.session.query(Pessoa).filter(Pessoa.email == email, Pessoa.senha == senha)
 
             if (pessoa is not None):
-
-                print("pessoa: " + str(pessoa.id))
-
-                dataHoraLogin = datetime
-                print(dataHoraLogin)
+                dataHoraLogin = datetime.now()
                 hashlib.sha1().update(str(dataHoraLogin).encode("utf-8"))
                 key = hashlib.sha1().hexdigest()
-                print(key)
-
                 login = Login(pessoa, dataHoraLogin, key)
-                print(login)
 
                 # Criação do Login.
                 db.session.add(login)
                 db.session.commit()
 
-                return ({}, 201)
+                return (marshal(login, login_campos), 201)
             else:
                 return ({}, 401)
 
