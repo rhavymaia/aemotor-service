@@ -7,7 +7,7 @@ from flask_restful import fields
 login_campos = {
     'id': fields.Integer(attribute='id'),
     'pessoa': fields.Nested(pessoa_fields),
-    'datahora': fields.String(attribute='data_login'),
+    'datahora': fields.String(attribute='datahora'),
     'key': fields.String(attribute='key')
 }
 

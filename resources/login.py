@@ -31,8 +31,9 @@ class Logins(Resource):
 
             if (pessoa is not None):
                 dataHoraLogin = datetime.now()
-                hashlib.sha1().update(str(dataHoraLogin).encode("utf-8"))
-                key = hashlib.sha1().hexdigest()
+                hash = hashlib.sha1()
+                hash.update(str(dataHoraLogin).encode("utf-8"))
+                key = hash.hexdigest()
                 login = Login(pessoa, dataHoraLogin, key)
 
                 # Criação do Login.
