@@ -31,9 +31,9 @@ class ConvitesResource(Resource):
             
             msg = email.message.Message()
             msg['Subject'] = "Aê Motô - Gerenciador de transporte escolar"
-            msg['From']  = "seuemail@gmail.com"
+            msg['From']  = "alessandraavelino21@gmail.com"
             msg['To'] = emails
-            password = "" #Essa senha será gerada através de uma config lá do google
+            password = "fqtlqfuzdoldjzpv" #Essa senha será gerada através de uma config lá do google
             msg.add_header("Content-Type", "text/html")
             msg.set_payload(corpo_email)
 
@@ -41,7 +41,7 @@ class ConvitesResource(Resource):
             s.starttls()
             s.login(msg['From'], password)
             s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
-            print("Email enviado com erro")
+            print("Email enviado com sucesso!!")
 
             convite = Convites(emails, mensagem)
 
@@ -55,34 +55,4 @@ class ConvitesResource(Resource):
 
         return 204
 
-    def put(self, id):
-        current_app.logger.info("Put - Convites")
-        try:
-            # Parser JSON
-            args = parser.parse_args()
-            current_app.logger.info("Convites: %s:" % args)
-            # Evento
-            email = args['email']
-            mensagem = args['mensagem']
-
-            Convites.query \
-                .filter_by(id=id) \
-                .update(dict(email=email, mensagem=mensagem))
-            db.session.commit()
-
-        except exc.SQLAlchemyError:
-            current_app.logger.error("Exceção")
-
-        return 204
-
-    def delete(self, id):
-        current_app.logger.info("Delete - Convite: %s:" % id)
-        try:
-            Convites.query.filter_by(id=id).delete()
-            db.session.commit()
-
-        except exc.SQLAlchemyError:
-            current_app.logger.error("Exceção")
-            return 404
-
-        return 204
+    

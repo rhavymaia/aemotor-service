@@ -7,7 +7,7 @@ from helpers.database import db, migrate
 
 from model.convites import Convites
 
-from resources.convites import ConvitesResource
+from resources.convite import ConvitesResource
 # CORS
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
