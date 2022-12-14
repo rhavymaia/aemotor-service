@@ -27,9 +27,9 @@ class Pessoa(Resource):
     @marshal_with(pessoa_fields)
     def get(self):
         current_app.logger.info("Get - Pessoas")
-        funcionarios = Pessoa.query\
+        pessoas = Pessoa.query\
             .all()
-        return funcionarios, 200
+        return pessoas, 200
 
     def post(self):
         current_app.logger.info("Post - Funcionario")

@@ -13,7 +13,7 @@ error_campos = {
 
 
 class Error():
-    def __init__(self, codigo, mensagem, detalhe):
+    def __init__(self, codigo, mensagem, detalhe=""):
         self.codigo = codigo
         self.mensagem = mensagem
         self.detalhe = detalhe
