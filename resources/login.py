@@ -9,8 +9,8 @@ from model.login import Login, login_campos
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
-parser.add_argument('email', required=True)
-parser.add_argument('senha', required=True)
+parser.add_argument('email', required=True, help="Campo e-mail é obrigatório.")
+parser.add_argument('senha', required=True, help="Campo senha é obrigatório.")
 
 
 class Logins(Resource):
@@ -41,8 +41,10 @@ class Logins(Resource):
                 db.session.commit()
 
                 return (marshal(login, login_campos), 200)
+
             else:
-                return ({"mensagem": "Usuario não autenticado"}, 401)
+                error = Error(2, "E-mail ou senha inválidos", "")
+                return (marshal(error, error_campos), 401)
 
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
