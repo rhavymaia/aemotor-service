@@ -6,6 +6,10 @@ from resources.endereco import Enderecos
 from resources.funcionario import FuncionariosResource, FuncionarioResource
 from helpers.database import db, migrate
 
+from model.convite import Convites
+
+from resources.convite import ConvitesResource
+
 from model.endereco import Endereco
 from model.pessoa import Pessoa
 from model.aluno import Aluno
@@ -22,6 +26,9 @@ db.init_app(app)
 migrate.init_app(app, db)
 
 api = Api(app)
+convite = Convites("email@gmail.com", "Venha se cadastrar no nosso aplicativo")
+print(convite)
+api.add_resource(ConvitesResource, '/prefeitura/convite')
 
 api.add_resource(Enderecos, '/enderecos')
 api.add_resource(FuncionariosResource, '/funcionarios')
