@@ -12,13 +12,15 @@ parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
+parser.add_argument('senha', required=True,
+                    help="Senha é campo obrigatório.")
 parser.add_argument('telefone', required=True)
 parser.add_argument('endereco', type=dict, required=True)
 parser.add_argument('instituicaoDeEnsino', required=True)
 parser.add_argument('curso', required=True)
 parser.add_argument('matricula', required=True)
 
-class Alunos(Resource):
+class AlunosResource(Resource):
     @marshal_with(aluno_fields)
     def get(self):
         current_app.logger.info("Get - Alunodb")
@@ -35,28 +37,36 @@ class Alunos(Resource):
             nome = args['nome']
             nascimento = args['nascimento']
             email = args['email']
+            senha = args['senha']
             telefone = args['telefone']
+            
             instituicaoDeEnsino = args['instituicaoDeEnsino']
             curso = args['curso']
             matricula = args['matricula']
-            #Endereco
+             # Endereco
             enderecoArgs = args['endereco']
             cep = enderecoArgs['cep']
             numero = enderecoArgs['numero']
             complemento = enderecoArgs['complemento']
             referencia = enderecoArgs['referencia']
             logradouro = enderecoArgs['logradouro']
+            
+            # Cidade
             cidade = enderecoArgs['cidade']
             nomeCidade = cidade['nome']
             siglaCidade = cidade['sigla']
+            
+            #Uf
             uf = cidade['uf']
             nomeUf = uf['nome']
             siglaUf = uf['sigla']
 
+
             cidade = Cidade(nomeCidade, siglaCidade, Uf(nomeUf, siglaUf))
-            endereco = Endereco(cep, numero, complemento,referencia, logradouro, cidade)
+            endereco = Endereco(cep, numero, complemento,
+                                referencia, logradouro, cidade)
             # Alunodb
-            aluno = Aluno( nome, nascimento, email, telefone, endereco,instituicaoDeEnsino,curso,matricula)
+            aluno = Aluno(nome, nascimento, email, senha, telefone, endereco,instituicaoDeEnsino,curso,matricula)
             # Criação do Alunodb.
             db.session.add(aluno)
             db.session.commit()
@@ -68,20 +78,64 @@ class Alunos(Resource):
 
         return 204
     
+class AlunoResource(Resource):    
     def put(self, id):
         current_app.logger.info("Put - Alunos")
         try:
-            # Parser JSON
+         # Parser JSON
             args = parser.parse_args()
-            current_app.logger.info("Alunodb: %s:" % args)
-            # Evento
+            current_app.logger.info("ALuno: %s:" % args)
+            # JSON
+            args = parser.parse_args()
+            nome = args['nome']
+            nascimento = args['nascimento']
+            email = args['email']
+            senha = args['senha']
+            telefone = args['telefone']
+
+            # Endereco
+            enderecoArgs = args['endereco']
+            cep = enderecoArgs['cep']
+            numero = enderecoArgs['numero']
+            complemento = enderecoArgs['complemento']
+            referencia = enderecoArgs['referencia']
+            logradouro = enderecoArgs['logradouro']
+            # Cidade
+            cidadeArgs = enderecoArgs['cidade']
+            nomeCidade = cidadeArgs['nome']
+            siglaCidade = cidadeArgs['sigla']
+
+            # UF
+            ufArgs = cidadeArgs['uf']
+            nomeUf = ufArgs['nome']
+            siglaUf = ufArgs['sigla']
+            
             instituicaoDeEnsino = args['instituicaoDeEnsino']
             curso = args['curso']
             matricula = args['matricula']
 
-            Aluno.query \
+            aluno =Aluno.query \
                 .filter_by(id=id) \
-                .update(dict(instituicaoDeEnsino=instituicaoDeEnsino,curso = curso, matricula = matricula))
+                .first()
+
+            aluno.nome = nome
+            aluno.nascimento = nascimento
+            aluno.email = email
+            aluno.senha = senha
+            aluno.telefone = telefone
+            aluno.instituicaoDeEnsino = instituicaoDeEnsino
+            aluno.curso = curso
+            aluno.matricula = matricula
+            aluno.endereco.cep = cep
+            aluno.endereco.numero = numero
+            aluno.endereco.complemento = complemento
+            aluno.endereco.referencia = referencia
+            aluno.endereco.logradouro = logradouro
+            aluno.endereco.cidade.nome = nomeCidade
+            aluno.endereco.cidade.sigla = siglaCidade
+            aluno.endereco.cidade.uf.nome = nomeUf
+            aluno.endereco.cidade.uf.sigla = siglaUf
+
             db.session.commit()
 
         except exc.SQLAlchemyError:

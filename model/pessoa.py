@@ -19,9 +19,9 @@ class Pessoa(db.Model):
     __tablename__ = "tb_pessoa"
 
     id = db.Column('id', db.Integer, primary_key=True)
-    nome = db.Column(db.String, unique=True, nullable=False)
-    email = db.Column(db.String(200), unique=True)
-    senha = db.Column(db.String(300), unique=True,
+    nome = db.Column(db.String, nullable=False)
+    email = db.Column(db.String(80), unique=True)
+    senha = db.Column(db.String(6),
                       nullable=False)
     telefone = db.Column(db.String(11))
     nascimento = db.Column(db.Date)
