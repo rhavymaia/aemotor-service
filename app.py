@@ -2,26 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
 
-#Model
-
-from model.endereco import Endereco
-from model.pessoa import Pessoa
-from model.aluno import Aluno
-from model.funcionario import Funcionario
-from model.gestorApp import GestorApp
-from model.instituicaoDeEnsino import InstituicaoDeEnsino
-from model.motorista import Motorista
-from model.passageiro import Passageiro
-from model.pessoa import Pessoa
-from model.prefeito import Prefeito
-from model.prefeitura import Prefeitura
-from model.rota import Rota
-from model.cidade import Cidade
-from model.uf import Uf
-from model.veiculo import Veiculo
-
 #Resources
-
 from resources.cidade import Cidades
 from resources.funcionario import Funcionarios
 from resources.gestorApp import GestorApps  
@@ -69,4 +50,6 @@ api.add_resource(Rota, '/rotas')
 api.add_resource(Prefeito, '/prefeitos')
 api.add_resource(Uf, '/ufs')
 api.add_resource(Veiculo, '/veiculos')
+=======
+api.add_resource(Enderecos, '/enderecos')
 

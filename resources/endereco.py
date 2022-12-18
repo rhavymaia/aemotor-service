@@ -6,8 +6,8 @@ from flask import request,jsonify
 from helpers.database import db
 
 from model.endereco import Endereco
-from model.error import Error, error_campos
 
+from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
 parser.add_argument('cep', required=True,location='args')
