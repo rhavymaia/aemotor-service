@@ -24,7 +24,7 @@ parser.add_argument('cargo', required=True)
 '''
 
 
-class Funcionarios(Resource):
+class FuncionariosResource(Resource):
 
     @marshal_with(funcionario_fields)
     def get(self):
@@ -59,7 +59,8 @@ class Funcionarios(Resource):
             siglaUf = uf['sigla']
 
             cidade = Cidade(nomeCidade, siglaCidade, Uf(nomeUf, siglaUf))
-            endereco = Endereco(cep, numero, complemento,referencia, logradouro, cidade)
+            endereco = Endereco(cep, numero, complemento,
+                                referencia, logradouro, cidade)
 
             prefeitura = args['prefeitura']
             cargo = args['cargo']
@@ -78,15 +79,17 @@ class Funcionarios(Resource):
             return marshal(erro, error_campos), 500
 
         return 204
-     
-class Funcionarios_Put(Resource):       
+
+
+class FuncionarioResource(Resource):
     def put(self, id):
         current_app.logger.info("Put - Funcionarios")
+        print(id)
         try:
             # Parser JSON
             args = parser.parse_args()
             current_app.logger.info("Funcionario: %s:" % args)
-             # JSON
+            # JSON
             args = parser.parse_args()
             nome = args['nome']
             nascimento = args['nascimento']
@@ -101,34 +104,39 @@ class Funcionarios_Put(Resource):
             complemento = enderecoArgs['complemento']
             referencia = enderecoArgs['referencia']
             logradouro = enderecoArgs['logradouro']
-            
-            cidade = enderecoArgs['cidade']
-            nomeCidade = cidade['nome']
-            siglaCidade = cidade['sigla']
-            
-            uf = cidade['uf']
-            nomeUf = uf['nome']
-            siglaUf = uf['sigla']
-            
+            # Cidade
+            cidadeArgs = enderecoArgs['cidade']
+            nomeCidade = cidadeArgs['nome']
+            siglaCidade = cidadeArgs['sigla']
+
+            # UF
+            ufArgs = cidadeArgs['uf']
+            nomeUf = ufArgs['nome']
+            siglaUf = ufArgs['sigla']
+            uf = Uf(nomeUf, siglaUf)
+
+            # Prefeitura
             prefeitura = args['prefeitura']
+            # Cargo
             cargo = args['cargo']
-             
-            cidade = Cidade(nomeCidade, siglaCidade, Uf(nomeUf, siglaUf))
-            endereco = Endereco(cep, numero, complemento,
-                                referencia, logradouro, cidade)
-            
-            Funcionario.query \
+
+            funcionario = Funcionario.query \
                 .filter_by(id=id) \
-                .update(dict(nome = nome, nascimento = nascimento , email= email, senha=senha, telefone=telefone, endereco=endereco, prefeitura = prefeitura, cargo = cargo))
+                .first()
+
+            funcionario.nome = nome
+            funcionario.email = email
+            funcionario.endereco.logradouro = logradouro
+            funcionario.endereco.cidade.uf.nome = nomeUf
+
             db.session.commit()
 
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
             erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
                          err.__cause__())
-            
+
             print(err)
             return marshal(erro, error_campos), 500
-        
-        
+
         return 204
