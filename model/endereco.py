@@ -1,5 +1,6 @@
 from helpers.database import db
 from flask_restful import fields
+
 from model.cidade import Cidade, cidade_fields
 
 endereco_fields = {
@@ -10,6 +11,7 @@ endereco_fields = {
     'referencia': fields.String(attribute='referencia'),
     'logradouro': fields.String(attribute='logradouro'),
     'cidade': fields.Nested(cidade_fields)
+
 }
 
 

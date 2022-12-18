@@ -16,3 +16,5 @@ SQLAlchemy==1.4.41
 Flask-SQLAlchemy==2.5.1
 Flask-Migrate==3.1.0
 psycopg2-binary==2.9.3
+
+autopep8==2.0.0
