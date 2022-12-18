@@ -24,9 +24,7 @@ db.init_app(app)
 migrate.init_app(app, db)
 
 api = Api(app)
-convite = Convites("email@gmail.com", "Venha se cadastrar no nosso aplicativo")
-print(convite)
-api.add_resource(ConvitesResource, '/prefeitura/convite')
+
 
 api.add_resource(Enderecos, '/enderecos')
 
