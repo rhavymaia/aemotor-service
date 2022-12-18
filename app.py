@@ -3,9 +3,13 @@ from flask_restful import Api
 from flask_cors import CORS
 
 from helpers.database import db, migrate
-from resources.endereco import Endereco
+
+
 from model.recuperar import Recuperar
 from resources.recuperar import RecuperarResource
+=======
+
+
 
 # CORS
 app = Flask(__name__)
@@ -20,7 +24,10 @@ migrate.init_app(app, db)
 
 api = Api(app)
 
+
 api.add_resource(RecuperarResource, '/senha/recuperar')
+=======
+
 
 if __name__ == '__main__':
     app.run(debug=False)
