@@ -4,6 +4,7 @@ from sqlalchemy import exc
 from helpers.database import db
 from model.funcionario import Funcionario, funcionario_fields
 from model.endereco import Endereco
+
 from model.cidade import Cidade
 from model.uf import Uf
 from model.error import Error, error_campos
@@ -12,6 +13,7 @@ parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
+
 parser.add_argument('senha', required=True,
                     help="Senha é campo obrigatório.")
 parser.add_argument('telefone', required=True)
@@ -24,7 +26,9 @@ parser.add_argument('cargo', required=True)
 '''
 
 
+
 class FuncionariosResource(Resource):
+
 
     @marshal_with(funcionario_fields)
     def get(self):
@@ -61,12 +65,16 @@ class FuncionariosResource(Resource):
             cidade = Cidade(nomeCidade, siglaCidade, Uf(nomeUf, siglaUf))
             endereco = Endereco(cep, numero, complemento,
                                 referencia, logradouro, cidade)
+            endereco = Endereco(cep, numero, complemento,
+                                referencia, logradouro)
+
 
             prefeitura = args['prefeitura']
             cargo = args['cargo']
 
             # Funcionário
             funcionario = Funcionario(
+
                 nome, nascimento, email, senha, telefone, endereco, prefeitura, cargo)
 
             # Criação do Funcionário.
@@ -140,3 +148,4 @@ class FuncionarioResource(Resource):
             return marshal(erro, error_campos), 500
 
         return 204
+
