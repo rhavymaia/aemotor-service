@@ -4,22 +4,22 @@ from flask_restful import (Resource, current_app, marshal, marshal_with,
 from sqlalchemy import exc
 import email.message
 from helpers.database import db
-from model.convite import Convites, convite_fields
+from model.aprovar import Aprovacao, aprovado_fields
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
 parser.add_argument('email', required=True)
 parser.add_argument('mensagem', required=True)
 
-class ConvitesResource(Resource):
-    @marshal_with(convite_fields)
+class AprovadoResource(Resource):
+    @marshal_with(aprovado_fields)
     def get(self):
-        current_app.logger.info("Get - Convites")
-        convites = Convites.query.all()
-        return convites, 200
+        current_app.logger.info("Get - Aprovacao")
+        aprovados = Aprovacao.query.all()
+        return aprovados, 200
 
     def post(self):
-        current_app.logger.info("Post - Convites")
+        current_app.logger.info("Post - Aprovacao")
         try:
             # JSON
             args = parser.parse_args()
@@ -30,9 +30,9 @@ class ConvitesResource(Resource):
             
             msg = email.message.Message()
             msg['Subject'] = "Aê Motô - Gerenciador de transporte escolar"
-            msg['From']  = "alessandraavelino21@gmail.com"
+            msg['From']  = "juvenalalex22@gmail.com"
             msg['To'] = emails
-            password = "fqtlqfuzdoldjzpv" #Essa senha será gerada através de uma config lá do google
+            password = "adpoeteverudeeqx" #Essa senha será gerada através de uma config lá do google
             msg.add_header("Content-Type", "text/html")
             msg.set_payload(corpo_email)
 
@@ -42,9 +42,9 @@ class ConvitesResource(Resource):
             s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
             print("Email enviado com sucesso!!")
 
-            convite = Convites(emails, mensagem)
+            aprovado = Aprovacao(emails, mensagem)
 
-            db.session.add(convite)
+            db.session.add(aprovado)
             db.session.commit()
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
