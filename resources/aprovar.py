@@ -40,7 +40,7 @@ class AprovadoResource(Resource):
             s.starttls()
             s.login(msg['From'], password)
             s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
-            print("Email enviado com sucesso!!")
+            print("Email para aprovação enviado com sucesso!!")
 
             aprovado = Aprovacao(emails, mensagem)
 
