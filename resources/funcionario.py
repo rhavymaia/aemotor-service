@@ -23,7 +23,7 @@ parser.add_argument('cargo', required=True)
 '''
 
 
-class Funcionarios(Resource):
+class FuncionariosResource(Resource):
 
     @marshal_with(funcionario_fields)
     def get(self):
@@ -75,5 +75,78 @@ class Funcionarios(Resource):
             erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
                          err.__cause__())
             return marshal(erro, error_campos), 500
+        
+        return 204
 
-        return 200
+
+class FuncionarioResource(Resource):
+    def put(self, id):
+        current_app.logger.info("Put - Funcionarios")
+        print(id)
+        try:
+            # Parser JSON
+            args = parser.parse_args()
+            current_app.logger.info("Funcionario: %s:" % args)
+            # JSON
+            args = parser.parse_args()
+            nome = args['nome']
+            nascimento = args['nascimento']
+            email = args['email']
+            senha = args['senha']
+            telefone = args['telefone']
+
+            # Endereco
+            enderecoArgs = args['endereco']
+            cep = enderecoArgs['cep']
+            numero = enderecoArgs['numero']
+            complemento = enderecoArgs['complemento']
+            referencia = enderecoArgs['referencia']
+            logradouro = enderecoArgs['logradouro']
+            # Cidade
+            cidadeArgs = enderecoArgs['cidade']
+            nomeCidade = cidadeArgs['nome']
+            siglaCidade = cidadeArgs['sigla']
+
+            # UF
+            ufArgs = cidadeArgs['uf']
+            nomeUf = ufArgs['nome']
+            siglaUf = ufArgs['sigla']
+            
+
+            # Prefeitura
+            prefeitura = args['prefeitura']
+            # Cargo
+            cargo = args['cargo']
+
+            funcionario = Funcionario.query \
+                .filter_by(id=id) \
+                .first()
+
+            funcionario.nome = nome
+            funcionario.nascimento = nascimento
+            funcionario.email = email
+            funcionario.senha = senha
+            funcionario.telefone = telefone
+            funcionario.prefeitura = prefeitura
+            funcionario.cargo = cargo
+            funcionario.endereco.cep = cep
+            funcionario.endereco.numero = numero
+            funcionario.endereco.complemento = complemento
+            funcionario.endereco.referencia = referencia
+            funcionario.endereco.logradouro = logradouro
+            funcionario.endereco.cidade.nome = nomeCidade
+            funcionario.endereco.cidade.sigla = siglaCidade
+            funcionario.endereco.cidade.uf.nome = nomeUf
+            funcionario.endereco.cidade.uf.sigla = siglaUf
+
+            db.session.commit()
+
+        except exc.SQLAlchemyError as err:
+            current_app.logger.error(err)
+            erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
+                         err.__cause__())
+
+            print(err)
+            return marshal(erro, error_campos), 500
+
+        return 204
