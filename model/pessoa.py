@@ -16,7 +16,6 @@ pessoa_fields = {
 class Pessoa(db.Model):
 
     __tablename__ = "tb_pessoa"
-    __tablename__ = "tb_pessoa"
 
     id = db.Column('id', db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=False)

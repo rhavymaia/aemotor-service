@@ -22,14 +22,14 @@ parser.add_argument('endereco', type=dict, required=True)
 '''
 
 
-class Pessoa(Resource):
+class PessoaResource(Resource):
 
     @marshal_with(pessoa_fields)
     def get(self):
         current_app.logger.info("Get - Pessoas")
-        funcionarios = Pessoa.query.filter_by(senha = senha)\
+        pessoas = Pessoa.query\
             .all()
-        return funcionarios, 200
+        return pessoas, 200
 
     def post(self):
         current_app.logger.info("Post - Funcionario")
@@ -60,8 +60,7 @@ class Pessoa(Resource):
             endereco = Endereco(cep, numero, complemento,
                                 referencia, logradouro, cidade)
             # Pessoa
-            pessoa = Pessoa(
-                nome, nascimento, email, senha, telefone, endereco)
+            pessoa = Pessoa(nome, nascimento, email, senha, telefone, endereco)
 
             # Criação do Pessoa.
             db.session.add(pessoa)
