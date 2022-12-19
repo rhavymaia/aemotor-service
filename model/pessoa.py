@@ -24,12 +24,15 @@ class Pessoa(db.Model):
                       nullable=False)
     telefone = db.Column(db.String(11))
     nascimento = db.Column(db.Date)
+    
     # Relacionamento com Endereço
     endereco = db.relationship("Endereco", uselist=False)
+    login = db.relationship("Login", uselist=False)
 
     # Herança: Superclasse
     tipo_pessoa = db.Column('tipo_pessoa', String(50))
     __mapper_args__ = {'polymorphic_on': tipo_pessoa}
+
 
     def __init__(self, nome, nascimento, email, senha, telefone, endereco:Endereco):
         self.nome = nome

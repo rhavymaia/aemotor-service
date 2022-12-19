@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS
+
 from model.pessoa import Pessoa
 from model.aluno import Aluno
 from model.endereco import Endereco
@@ -32,6 +33,7 @@ migrate.init_app(app, db)
 api = Api(app)
 
 api.add_resource(Enderecos, '/enderecos')
+
 api.add_resource(FuncionariosResource, '/funcionarios')
 api.add_resource(PessoaResource, '/pessoa')
 api.add_resource(FuncionarioResource, '/funcionarios/<int:id>')
