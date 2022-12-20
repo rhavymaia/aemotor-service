@@ -7,13 +7,13 @@ class Pessoa(db.Model):
     __tablename__ = "tb_pessoa"
 
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String, unique=True, nullable=False)
-    nascimento = db.Column(db.String(10), unique=True, nullable=False)
-    email = db.Column(db.String(200), unique=True)
-    senha = db.Column(db.String(300), unique=True, nullable=False)
-    telefone = db.Column(db.String(11))
+    nome = db.Column(db.String, nullable=False)
+    nascimento = db.Column(db.String(10), nullable=False)
+    email = db.Column(db.String(200), nullable=False, unique=True)
+    senha = db.Column(db.String(300), nullable=False)
+    telefone = db.Column(db.String(11), nullable=False, unique=True)
 
-    # Relacionamento com Endereco
+    # Relacionamento com Endereco e Aluno
     endereco = db.relationship("Endereco", uselist=False)
     aluno_child = db.relationship("Aluno", uselist=False)
     # Herança: Superclasse

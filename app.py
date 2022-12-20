@@ -6,7 +6,7 @@ from model.aluno import Aluno
 
 from resources.endereco import Enderecos
 from resources.funcionario import Funcionarios
-from resources.aluno import Alunos
+from resources.aluno import Alunos, AlunoResource
 
 from helpers.database import db, migrate
 
@@ -28,7 +28,7 @@ api.add_resource(Enderecos, '/enderecos')
 api.add_resource(Funcionarios, '/funcionarios')
 
 api.add_resource(Alunos, '/alunos')
-#api.add_resource(Alunos, '/alunos/<int:id>')
+api.add_resource(AlunoResource, '/alunos/<int:id>')
 
 if __name__ == '__main__':
     app.run(debug=False)
