@@ -11,17 +11,16 @@ parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
-parser.add_argument('senha', required=True)
+parser.add_argument('senha', required=True, help="senha é campo obrigatório.")
 parser.add_argument('telefone', required=True)
 parser.add_argument('instituicaoDeEnsino', required=True)
 parser.add_argument('curso', required=True)
-parser.add_argument('matricula', required=True)
+parser.add_argument('matricula', required=True, help="Matricula inválida, ou já cadastrada")
 parser.add_argument('endereco',type=dict, required=True)
 
 
 class Alunos(Resource):
-    @marshal_with(aluno_fields)
-    
+    @marshal_with(aluno_fields)   
     def get(self):
         current_app.logger.info("Get - Alunos")
         aluno = Aluno.query\
@@ -41,6 +40,7 @@ class Alunos(Resource):
             instituicaoDeEnsino = args['instituicaoDeEnsino']
             curso = args['curso']                    
             matricula = args['matricula']
+
             #Endereco
             cep = args['endereco']['cep']
             numero = args['endereco']['numero']
@@ -72,14 +72,18 @@ class AlunoResource(Resource):
          # Parser JSON
             args = parser.parse_args()
             current_app.logger.info("ALuno: %s:" % args)
+            #json
+
             nome = args['nome']
             nascimento = args['nascimento']
             email = args['email']
             senha = args['senha']
-            telefone = args['telefone']        
+            telefone = args['telefone']    
+
             instituicaoDeEnsino = args['instituicaoDeEnsino']
             curso = args['curso']                    
             matricula = args['matricula']
+
             #Endereco
             cep = args['endereco']['cep']
             numero = args['endereco']['numero']
@@ -91,26 +95,23 @@ class AlunoResource(Resource):
 
             aluno =Aluno.query \
                 .filter_by(id=id) \
-                .update(dict(nome = nome, nascimento = nascimento, email = email, senha=senha, telefone=telefone,
-                 instituicaoDeEnsino=instituicaoDeEnsino, curso=curso, matricula=matricula, endereco=endereco))
+                .first()
 
+            aluno.nome = nome
+            aluno.nascimento = nascimento
+            aluno.email = email
+            aluno.senha = senha
+            aluno.telefone = telefone
+            aluno.instituicaoDeEnsino = instituicaoDeEnsino
+            aluno.curso = curso
+            aluno.matricula = matricula
+            aluno.endereco.cep = cep
+            aluno.endereco.numero = numero
+            aluno.endereco.complemento = complemento
+            aluno.endereco.referencia = referencia
+            aluno.endereco.logradouro = logradouro
+            
             db.session.commit()
-            #     .first()
-
-            # aluno.nome = nome
-            # aluno.nascimento = nascimento
-            # aluno.email = email
-            # aluno.senha = senha
-            # aluno.telefone = telefone
-            # aluno.instituicaoDeEnsino = instituicaoDeEnsino
-            # aluno.curso = curso
-            # aluno.matricula = matricula
-            # aluno.endereco.cep = cep
-            # aluno.endereco.numero = numero
-            # aluno.endereco.complemento = complemento
-            # aluno.endereco.referencia = referencia
-            # aluno.endereco.logradouro = logradouro
-
             
 
         except exc.SQLAlchemyError:
