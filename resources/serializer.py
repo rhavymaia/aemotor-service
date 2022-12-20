@@ -1,4 +1,4 @@
-from model.convites import Convites
+from model.convite import Convites
 
 def response_serializer(convites: Convites):
     response = []

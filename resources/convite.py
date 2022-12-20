@@ -5,7 +5,7 @@ from flask_restful import (Resource, current_app, marshal, marshal_with,
 from sqlalchemy import exc
 import email.message
 from helpers.database import db
-from model.convites import Convites, convite_fields
+from model.convite import Convites, convite_fields
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
@@ -24,16 +24,16 @@ class ConvitesResource(Resource):
         try:
             # JSON
             args = parser.parse_args()
-            emails = args['email']
+            email_destinatario = args['email']
             mensagem = args['mensagem']
 
-            corpo_email = "<p>"+emails+"</p>"+"<p>"+mensagem+"</p>"
+            corpo_email = "<p>"+email_destinatario+"</p>"+"<p>"+mensagem+"</p>"
             
             msg = email.message.Message()
             msg['Subject'] = "Aê Motô - Gerenciador de transporte escolar"
-            msg['From']  = "alessandraavelino21@gmail.com"
-            msg['To'] = emails
-            password = "fqtlqfuzdoldjzpv" #Essa senha será gerada através de uma config lá do google
+            msg['From']  = ""
+            msg['To'] = email_destinatario
+            password = "" #Essa senha será gerada através de uma config lá do google
             msg.add_header("Content-Type", "text/html")
             msg.set_payload(corpo_email)
 
@@ -43,7 +43,7 @@ class ConvitesResource(Resource):
             s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
             print("Email enviado com sucesso!!")
 
-            convite = Convites(emails, mensagem)
+            convite = Convites(email_destinatario, mensagem)
 
             db.session.add(convite)
             db.session.commit()
@@ -53,6 +53,6 @@ class ConvitesResource(Resource):
                          err.__cause__())
             return marshal(erro, error_campos), 500
 
-        return 204
+        return [{"message": "Convite enviado com sucesso!"}, 204]
 
     

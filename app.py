@@ -5,7 +5,7 @@ from flask_cors import CORS
 from helpers.database import db, migrate
 
 
-from model.convites import Convites
+from model.convite import Convites
 
 from resources.convite import ConvitesResource
 # CORS
