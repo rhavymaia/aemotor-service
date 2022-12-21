@@ -9,13 +9,13 @@ from model.uf import Uf
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
-parser.add_argument('nome', required=True)
+parser.add_argument('nome', required=True, help="Nome é um campo obrigatório.")
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True, help="Email é um campo obrigatório.")
 parser.add_argument('senha', required=True, help="Senha é campo obrigatório.")
 parser.add_argument('telefone', required=True)
 parser.add_argument('endereco', type=dict, required=True)
-parser.add_argument('prefeitura', required=True)
+parser.add_argument('prefeitura', required=True, help="Prefeitura é um campo obrigatório.")
 parser.add_argument('cargo', required=True)
 
 
