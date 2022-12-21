@@ -4,7 +4,7 @@ from flask_cors import CORS
 
 #Resources
 from resources.cidade import Cidades
-from resources.funcionario import Funcionarios
+from resources.funcionario import FuncionariosResource
 from resources.gestorApp import GestorApps  
 from resources.index import IndexResource
 from resources.instituicaoEnsino import InstituicaoDeEnsinos
@@ -36,20 +36,19 @@ migrate.init_app(app, db)
 api = Api(app)
 
 api.add_resource(IndexResource, '/')
-api.add_resource(Endereco, '/enderecos')
-api.add_resource(Pessoa, '/pessoas')
-api.add_resource(Prefeitura, '/prefeituras')
-api.add_resource(Aluno, '/alunos')
-api.add_resource(InstituicaoDeEnsino, '/instituicoes')
-api.add_resource(Funcionario, '/funcionarios')
-api.add_resource(GestorApp, '/gestorApps')
-api.add_resource(Cidade, '/cidades')
-api.add_resource(Motorista, '/motoristas')
-api.add_resource(Passageiro, '/passageiros')
-api.add_resource(Rota, '/rotas')
-api.add_resource(Prefeito, '/prefeitos')
-api.add_resource(Uf, '/ufs')
-api.add_resource(Veiculo, '/veiculos')
-=======
 api.add_resource(Enderecos, '/enderecos')
+api.add_resource(Pessoas, '/pessoas')
+api.add_resource(Prefeituras, '/prefeituras')
+api.add_resource(Alunos, '/alunos')
+api.add_resource(InstituicaoDeEnsinos, '/instituicoes')
+api.add_resource(FuncionariosResource, '/funcionarios')
+api.add_resource(GestorApps, '/gestorApps')
+api.add_resource(Cidades, '/cidades')
+api.add_resource(Motoristas, '/motoristas')
+api.add_resource(Passageiros, '/passageiros')
+api.add_resource(Rotas, '/rotas')
+api.add_resource(Prefeitos, '/prefeitos')
+api.add_resource(Ufs, '/ufs')
+api.add_resource(Veiculos, '/veiculos')
+
 

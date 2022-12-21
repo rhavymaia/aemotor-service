@@ -1,4 +1,4 @@
-from model.pessoa import Pessoa_db
+from model.pessoa import Pessoa
 from model.endereco import endereco_fields
 from helpers.database import db
 from sqlalchemy import ForeignKey
@@ -16,7 +16,7 @@ aluno_fields = {
     'endereco': fields.Nested(endereco_fields)
 }
 
-class Aluno(Pessoa_db,db.Model):
+class Aluno(Pessoa,db.Model):
   
     
     __tablename__ = 'tb_aluno'
@@ -27,9 +27,6 @@ class Aluno(Pessoa_db,db.Model):
     curso = db.Column(db.String(50), nullable=False)
     matricula = db.Column(db.String(20), nullable=False) 
     
-    instituicao_child = db.relationship("InstituicaoDeEnsino_db", uselist=False)
-    rotas = db.relationship('Rota_db', backref='Rota_db', lazy=True)
-    passageiro_child = db.relationship('Passageiro_db',uselist=False)
     
 
     def __init__(self, nome, nascimento, email, telefone,endereco, instituicaoDeEnsino, curso, matricula,pessoa):

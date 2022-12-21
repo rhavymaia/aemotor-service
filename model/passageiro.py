@@ -7,7 +7,6 @@ class Passageiro(db.Model):
     cidadeOrigem = db.Column(db.String(90), nullable=False)
     cidadeDestino = db.Column(db.String(90), nullable=False)    
     
-    aluno_id = db.Column(db.Integer, db.ForeignKey('tb_aluno.id_aluno'))
     
     
     def __init__(self, aluno, cidadeOrigem, cidadeDestino):

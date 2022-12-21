@@ -1,5 +1,5 @@
 from model.endereco import Endereco, endereco_fields
-
+from flask_restful import fields
 from helpers.database import db
 from sqlalchemy.types import String
 
