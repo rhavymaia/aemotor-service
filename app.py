@@ -7,7 +7,6 @@ from helpers.database import db, migrate
 
 from model.recuperar import Recuperar
 from resources.recuperar import RecuperarResource
-=======
 
 
 
@@ -26,7 +25,6 @@ api = Api(app)
 
 
 api.add_resource(RecuperarResource, '/senha/recuperar')
-=======
 
 
 if __name__ == '__main__':

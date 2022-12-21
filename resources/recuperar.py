@@ -8,8 +8,8 @@ from model.recuperar import Recuperar, recuperar_fields
 from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
-parser.add_argument('email', required=True)
-parser.add_argument('mensagem', required=True)
+parser.add_argument('email', required=True, help="Campo e-mail é obrigatório.")
+parser.add_argument('mensagem', required=True, help="Campo mensagem é obrigatório.")
 
 class RecuperarResource(Resource):
     @marshal_with(recuperar_fields)
@@ -40,16 +40,19 @@ class RecuperarResource(Resource):
             s.starttls()
             s.login(msg['From'], password)
             s.sendmail(msg['From'], [msg['To']], msg.as_string().encode('utf-8'))
-            print("Email enviado com sucesso!!")
+            
 
             recuperar = Recuperar(emails, mensagem)
 
             db.session.add(recuperar)
             db.session.commit()
+            
+            
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
             erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
                          err.__cause__())
             return marshal(erro, error_campos), 500
+    
 
-        return 204
+        return ("Email enviado com sucesso", 201)
