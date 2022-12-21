@@ -51,7 +51,7 @@ class AprovadoResource(Resource):
             erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
                          err.__cause__())
             return marshal(erro, error_campos), 500
-
-        return 204
-
+        
+        return ("Email enviado com sucesso", 201)
+       
     
