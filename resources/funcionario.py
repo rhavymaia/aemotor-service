@@ -10,7 +10,7 @@ from model.error import Error, error_campos
 
 parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
-parser.add_argument('nascimento', required=True)
+parser.add_argument('nascimento', required=True) #checada de data
 parser.add_argument('email', required=True, help="Email é um campo obrigatório.")
 parser.add_argument('senha', required=True, help="Senha é campo obrigatório.")
 parser.add_argument('telefone', required=True)
@@ -146,7 +146,8 @@ class FuncionarioResource(Resource):
             erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
                          err.__cause__())
 
-            print(err)
             return marshal(erro, error_campos), 500
 
         return 204
+
+            

@@ -3,6 +3,7 @@ from flask_restful import Api
 from flask_cors import CORS
 
 from resources.endereco import Enderecos
+#from resources.instituicaoEnsino import InstituicoesEnsino
 from resources.funcionario import FuncionariosResource, FuncionarioResource
 from resources.login import Logins
 
@@ -26,6 +27,7 @@ api.add_resource(Enderecos, '/enderecos')
 api.add_resource(FuncionariosResource, '/funcionarios')
 api.add_resource(FuncionarioResource, '/funcionarios/<int:id>')
 api.add_resource(Logins, '/login')
+#api.add_resource(InstituicoesEnsino, '/instituicoesDeEnsino')
 
 if __name__ == '__main__':
     app.run(debug=False)
