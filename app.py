@@ -9,7 +9,7 @@ from model.funcionario import Funcionario
 from model.cidade import Cidade
 from model.uf import Uf
 
-from resources.pessoa import PessoaResource
+from resources.pessoa import PessoaResource, PessoasResource
 from resources.endereco import Enderecos
 from resources.funcionario import FuncionarioResource,FuncionariosResource
 from helpers.database import db, migrate
@@ -35,10 +35,11 @@ api = Api(app)
 api.add_resource(Enderecos, '/enderecos')
 
 api.add_resource(FuncionariosResource, '/funcionarios')
-api.add_resource(PessoaResource, '/pessoa')
+api.add_resource(PessoasResource, '/pessoa')
+api.add_resource(PessoaResource, '/pessoa/<int:id>')
 api.add_resource(FuncionarioResource, '/funcionarios/<int:id>')
-api.add_resource(AlunosResource, '/Alunos')
-api.add_resource(AlunoResource, '/Aluno/<int:id>')
+api.add_resource(AlunosResource, '/alunos')
+api.add_resource(AlunoResource, '/aluno/<int:id>')
 
 
 if __name__ == '__main__':

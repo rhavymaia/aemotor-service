@@ -22,7 +22,7 @@ parser.add_argument('endereco', type=dict, required=True)
 '''
 
 
-class PessoaResource(Resource):
+class PessoasResource(Resource):
 
     @marshal_with(pessoa_fields)
     def get(self):
@@ -71,5 +71,21 @@ class PessoaResource(Resource):
             erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
                          err.__cause__())
             return marshal(erro, error_campos), 500
+
+        return 204
+    
+class PessoaResource(Resource):
+    def delete(self, id):
+        current_app.logger.info("Delete - Pessoa: %s:" % id)
+        try:
+            Pessoa.query.filter_by(id=id).delete()
+            db.session.commit()
+
+        except exc.SQLAlchemyError as err:
+            current_app.logger.error(err)
+            erro = Error(1, "Erro ao adicionar no banco de dados, consulte o adminstrador",
+                         err.__cause__())
+            print(err)
+            return marshal(erro, error_campos)
 
         return 204

@@ -156,4 +156,16 @@ class FuncionarioResource(Resource):
             return marshal(erro, error_campos), 500
 
         return 204
+    
+    def delete(self, id):
+        current_app.logger.info("Delete - Funcionario: %s:" % id)
+        try:
+            Funcionario.query.filter_by(id=id).delete()
+            db.session.commit()
+
+        except exc.SQLAlchemyError:
+            current_app.logger.error("Exceção")
+            return 404
+
+        return 204
 
