@@ -1,9 +1,8 @@
-from model.pessoa import Pessoa
 from helpers.database import db
 from sqlalchemy import ForeignKey
 from flask_restful import fields
-
 from model.endereco import endereco_fields
+from model.pessoa import Pessoa
 
 funcionario_fields = {
     'id': fields.Integer(attribute='id'),

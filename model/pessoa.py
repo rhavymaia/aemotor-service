@@ -1,12 +1,23 @@
+from model.endereco import Endereco, endereco_fields
+from flask_restful import fields
 from helpers.database import db
 from sqlalchemy.types import String
 
+pessoa_fields = {
+    'id': fields.Integer(attribute='id'),
+    'nome': fields.String(attribute='nome'),
+    'nascimento': fields.String(attribute='nascimento'),
+    'email': fields.String(attribute='email'),
+    'senha': fields.String(attribute='senha'),
+    'telefone': fields.String(attribute='telefone'),
+    'endereco': fields.Nested(endereco_fields)
+}
 
 class Pessoa(db.Model):
 
     __tablename__ = "tb_pessoa"
 
-    id = db.Column('id', db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, unique=True, nullable=False)
     email = db.Column(db.String(200), unique=True)
     senha = db.Column(db.String(300), unique=True, nullable=False)
@@ -15,13 +26,12 @@ class Pessoa(db.Model):
 
     # Relacionamento com Endereço
     endereco = db.relationship("Endereco", uselist=False)
-    login = db.relationship("Login", uselist=False)
-
+    
     # Herança: Superclasse
     tipo_pessoa = db.Column('tipo_pessoa', String(50))
-    __mapper_args__ = {'polymorphic_on': tipo_pessoa}
-
-    def __init__(self, nome, nascimento, email, senha, telefone, endereco):
+    _mapper_args_ = {'polymorphic_on': tipo_pessoa}
+    
+    def __init__(self, nome, nascimento, email, senha, telefone, endereco: Endereco):
         self.nome = nome
         self.nascimento = nascimento
         self.email = email

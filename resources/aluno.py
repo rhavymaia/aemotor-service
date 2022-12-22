@@ -1,38 +1,43 @@
-from model.pessoa import Pessoa
+from model.aluno import Aluno,aluno_fields
 from model.error import Error, error_campos
 from helpers.database import db
 from flask import jsonify
 from sqlalchemy import exc
 from flask_restful import Resource, marshal_with, reqparse, current_app, marshal
 from model.endereco import Endereco
-parser = reqparse.RequestParser()
 
+parser = reqparse.RequestParser()
 parser.add_argument('nome', required=True)
 parser.add_argument('nascimento', required=True)
 parser.add_argument('email', required=True)
 parser.add_argument('telefone', required=True)
 parser.add_argument('endereco', type=dict, required=True)
+parser.add_argument('instituicaoDeEnsino', required=True)
+parser.add_argument('curso', required=True)
+parser.add_argument('matricula', required=True)
 
-
-
-class Pessoas(Resource):
+class Alunos(Resource):
+    @marshal_with(aluno_fields)
     def get(self):
-        current_app.logger.info("Get - Pessoas ")
-        pessoa = Pessoa.query\
-            .order_by(Pessoa.email)\
+        current_app.logger.info("Get - Alunodb")
+        aluno = Aluno.query\
+            .order_by(Aluno.curso)\
             .all()
-        return pessoa, 200
+        return aluno, 200
+    
     def post(self):
-        current_app.logger.info("Post - Pessoas")
+        current_app.logger.info("Post - Alunos")
         try:
             # JSON
             args = parser.parse_args()
-        
             nome = args['nome']
             nascimento = args['nascimento']
             email = args['email']
             telefone = args['telefone']
-            #Endereco_db
+            instituicaoDeEnsino = args['instituicaoDeEnsino']
+            curso = args['curso']
+            matricula = args['matricula']
+             #Endereco_db
             cep = args['endereco']['cep']
             numero = args['endereco']['numero']
             complemento = args['endereco']['complemento']
@@ -40,10 +45,10 @@ class Pessoas(Resource):
             logradouro = args['endereco']['logradouro']
             endereco = Endereco(cep, numero, complemento,
                                 referencia, logradouro)
-            # Pessoa
-            pessoa = Pessoa(nome,nascimento,email,telefone,endereco)
-            # Criação do Pessoa.
-            db.session.add(pessoa)
+            # Alunodb
+            aluno = Aluno( nome, nascimento, email, telefone, endereco,instituicaoDeEnsino,curso,matricula)
+            # Criação do Alunodb.
+            db.session.add(aluno)
             db.session.commit()
         except exc.SQLAlchemyError as err:
             current_app.logger.error(err)
@@ -53,22 +58,20 @@ class Pessoas(Resource):
 
         return 204
     
-    def put(self, pessoa_id):
-        current_app.logger.info("Put - Pessoas")
+    def put(self, aluno_id):
+        current_app.logger.info("Put - Alunos")
         try:
             # Parser JSON
             args = parser.parse_args()
-            current_app.logger.info("Pessoa: %s:" % args)
+            current_app.logger.info("Alunodb: %s:" % args)
             # Evento
-            nome = args['nome']
-            nascimento = args['nascimento']
-            email = args['email']
-            telefone = args['telefone']
-            tipo_pessoa = args['tipo_pessoa']
+            instituicaoDeEnsino = args['instituicaoDeEnsino']
+            curso = args['curso']
+            matricula = args['matricula']
 
-            Pessoa.query \
-                .filter_by(id=pessoa_id) \
-                .update(dict(nome=nome,nascimento = nascimento, email = email, telefone = telefone,tipo_pessoa=tipo_pessoa))
+            Aluno.query \
+                .filter_by(id=aluno_id) \
+                .update(dict(instituicaoDeEnsino=instituicaoDeEnsino,curso = curso, matricula = matricula))
             db.session.commit()
 
         except exc.SQLAlchemyError:
@@ -76,10 +79,10 @@ class Pessoas(Resource):
 
         return 204
     
-    def delete(self, pessoa_id):
-        current_app.logger.info("Delete - Pessoas: %s:" % pessoa_id)
+    def delete(self, aluno_id):
+        current_app.logger.info("Delete - Alunodb: %s:" % aluno_id)
         try:
-            Pessoa.query.filter_by(id=pessoa_id).delete()
+            Aluno.query.filter_by(id=aluno_id).delete()
             db.session.commit()
 
         except exc.SQLAlchemyError:
